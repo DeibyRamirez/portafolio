@@ -7,7 +7,7 @@ interface CertificadoProps {
 
 export default function Certificado({ titulo, imagen }: CertificadoProps) {
     return (
-        <div className="rounded-lg shadow-lg p-4 bg-gray-800 text-white">
+        <div className="rounded-lg shadow shadow-yellow-500 bg-white border p-4 text-black justify-center items-center flex flex-col">
             <Image
                 src={imagen}
                 alt="Imagen de Certificado"

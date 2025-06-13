@@ -7,7 +7,7 @@ import Logros from "./components/Logros";
 export default function HomePage() {
   return (
     <>
-    {/* Llamo a los contennidos de las difenretes secciones a la principal */}
+    {/* Llamo a los contenidos de las diferentes secciones a la principal */}
       <Inicio />
       <DesarrolloMovil />
       <DesarrolloWeb />
