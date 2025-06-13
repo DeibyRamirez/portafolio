@@ -28,11 +28,11 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
         {/* Parte Superior header superior derecho */}
         <header className="bg-transparent text-white p-10 absolute top-0 right-0 left-150 flex justify-between items-center">
           <div />
-          <nav className="flex gap-4 justify-between w-full max-w-md mx-auto">
-            <a href="#inicio">Inicio</a>
-            <a href="#d_movil">Desarrollo Movil</a>
-            <a href="#d_web">Desarrollo Web</a>
-            <a href="#logros">Certificaciones</a>
+          <nav className="flex m-8 gap-5 text-2xl font-extralight justify-center items-center ">
+            <a href="#inicio" className="hover:text-yellow-400 border-b-2 border-transparent hover:border-yellow-400 transition-duration-300">Inicio</a>
+            <a href="#d_movil" className="hover:text-yellow-400 border-b-2 border-transparent hover:border-yellow-400 transition-duration-300">Desarrollo Movil</a>
+            <a href="#d_web" className="hover:text-yellow-400 border-b-2 border-transparent hover:border-yellow-400 transition-duration-300">Desarrollo Web</a>
+            <a href="#logros" className="hover:text-yellow-400 border-b-2 border-transparent hover:border-yellow-400 transition-duration-300">Certificaciones</a>
           </nav>
           <div />
         </header>
@@ -41,7 +41,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
 
         {/* Footer */}
         <footer className="bg-graty-800 text-white text-center p-4">
-          @ 2025 Portafolio ING.Deiby Alejandro Ramirez Galvis
+          @ 2025 Portafolio Ing.Deiby Alejandro Ramirez Galvis
         </footer>
       </body>
     </html>
