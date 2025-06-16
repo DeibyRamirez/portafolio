@@ -1,106 +1,130 @@
 import Image from "next/image";
+import { Code, Cpu, Layers, Zap } from "lucide-react";
 
 interface HerramientasProps {
-    lenguajes: string[];
-    frameworks: string[];
-    librerias: string[];
-    tipo: "movil" | "web";
+  lenguajes: string[];
+  frameworks: string[];
+  librerias: string[];
+  tipo: "movil" | "web";
 }
 
 export default function Herramientas({ lenguajes, frameworks, librerias, tipo }: HerramientasProps) {
-    if (tipo === "movil") {
-        return (
-            <div className="w-250 h-100 bg-white rounded-lg shadow-md p-6 space-y-6">
-                <h1 className="text-3xl font-bold text-black">Herramientas :</h1>
-                <div className=" flex gap-10 justify-center items-start">
-                    <div className=" w-50 h-70  bg-white border border-black rounded-2xl shadow-yellow-400 shadow-lg">
-                        <h2 className="m-2 text-xl font-semibold text-blue-600 mb-2">Lenguajes</h2>
-                        <ul className=" m-4 flex flex-col gap-2">
-                            {lenguajes.map((lenguaje, index) => (
-                                <li
-                                    key={index}
-                                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-                                >
-                                    {lenguaje}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="w-50 h-70  bg-white border border-black rounded-2xl shadow-yellow-400 shadow-lg ">
-                        <h2 className="m-2 text-xl font-semibold text-green-600 mb-2">Frameworks</h2>
-                        <ul className="m-4 flex flex-col gap-2">
-                            {frameworks.map((framework, index) => (
-                                <li
-                                    key={index}
-                                    className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
-                                >
-                                    {framework}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="w-50 h-70  bg-white border border-black rounded-2xl shadow-yellow-400 shadow-lg ">
-                        <h2 className=" m-2 text-xl font-semibold text-purple-600 mb-2">Librerías</h2>
-                        <ul className=" m-4 flex flex-col gap-2">
-                            {librerias.map((libreria, index) => (
-                                <li
-                                    key={index}
-                                    className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
-                                >
-                                    {libreria}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
+  const iconClass = "w-5 h-5 text-yellow-500";
+  if (tipo === "movil") {
     return (
-        <div className="w-152 h-82 bg-white rounded-lg shadow-md p-6 space-y-6">
-            <h1 className="text-3xl font-bold text-black">Herramientas :</h1>
-            <div className="flex gap-4 justify-start items-start">
-                <div className="w-50 h-55 border border-black shadow shadow-yellow-500 rounded-2xl">
-                    <h2 className="m-2 text-xl font-semibold text-blue-600 mb-2">Lenguajes</h2>
-                    <ul className="m-4 flex flex-col gap-2">
-                        {lenguajes.map((lenguaje, index) => (
-                            <li
-                                key={index}
-                                className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-                            >
-                                {lenguaje}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="w-50 h-55 border border-black shadow shadow-yellow-500 rounded-2xl">
-                    <h2 className="m-2 text-xl font-semibold text-green-600 mb-2">Frameworks</h2>
-                    <ul className="m-4 flex flex-col gap-2">
-                        {frameworks.map((framework, index) => (
-                            <li
-                                key={index}
-                                className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
-                            >
-                                {framework}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="w-50 h-55 border border-black shadow shadow-yellow-500 rounded-2xl">
-                    <h2 className="m-2 text-xl font-semibold text-purple-600 mb-2">Librerías</h2>
-                    <ul className="m-4 flex flex-col gap-2">
-                        {librerias.map((libreria, index) => (
-                            <li
-                                key={index}
-                                className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
-                            >
-                                {libreria}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+      <div className="space-y-8">
+        <h1 className="text-3xl font-bold text-gray-900 border-b-2 border-yellow-500 pb-2 inline-block">
+          Tecnologías que utilizo
+        </h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Lenguajes */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <Code className={iconClass} />
+              <h2 className="text-xl font-semibold text-gray-800">Lenguajes</h2>
             </div>
+            <ul className="space-y-2">
+              {lenguajes.map((lenguaje, index) => (
+                <li key={index} className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                  <span className="text-gray-700">{lenguaje}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Frameworks */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <Layers className={iconClass} />
+              <h2 className="text-xl font-semibold text-gray-800">Frameworks</h2>
+            </div>
+            <ul className="space-y-2">
+              {frameworks.map((framework, index) => (
+                <li key={index} className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                  <span className="text-gray-700">{framework}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Librerías */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <Zap className={iconClass} />
+              <h2 className="text-xl font-semibold text-gray-800">Librerías</h2>
+            </div>
+            <ul className="space-y-2">
+              {librerias.map((libreria, index) => (
+                <li key={index} className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                  <span className="text-gray-700">{libreria}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+      </div>
     );
+
+  }
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-gray-900 border-b-2 border-yellow-500 pb-2 inline-block">
+        Tecnologías que utilizo
+      </h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Lenguajes */}
+        <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-4">
+            <Code className={iconClass} />
+            <h2 className="text-xl font-semibold text-gray-800">Lenguajes</h2>
+          </div>
+          <ul className="space-y-2">
+            {lenguajes.map((lenguaje, index) => (
+              <li key={index} className="flex items-center gap-3">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-gray-700">{lenguaje}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Frameworks */}
+        <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-4">
+            <Layers className={iconClass} />
+            <h2 className="text-xl font-semibold text-gray-800">Frameworks</h2>
+          </div>
+          <ul className="space-y-2">
+            {frameworks.map((framework, index) => (
+              <li key={index} className="flex items-center gap-3">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-gray-700">{framework}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Librerías */}
+        <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-4">
+            <Zap className={iconClass} />
+            <h2 className="text-xl font-semibold text-gray-800">Librerías</h2>
+          </div>
+          <ul className="space-y-2">
+            {librerias.map((libreria, index) => (
+              <li key={index} className="flex items-center gap-3">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-gray-700">{libreria}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
 }

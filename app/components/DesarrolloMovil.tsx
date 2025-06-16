@@ -1,79 +1,112 @@
-import Image from "next/image"
+import Image from "next/image";
 import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
-
+import { Smartphone, Code, Cpu, Zap } from "lucide-react";
 
 export default function DesarrolloMovil() {
-    return (
-        <section id="d_movil" className="w-full h-200 flex">
-            <div className="m-4 w-1/3 md:h-192 flex justify-center items-center p-4 relative">
-                {/* Imagen del Telefono */}
-                <Image
-                    src="/celular.png"
-                    alt="Telefono"
-                    width={400}
-                    height={500}
-                    className="z-0"
+  return (
+    <section id="d_movil" className="py-20 px-6 bg-white">
+      <div className="max-w-6xl mx-auto">
+        {/* Encabezado con animación */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <span className="inline-block bg-yellow-500 text-white px-4 py-2 rounded-lg">Desarrollo Móvil</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Creo aplicaciones móviles nativas y multiplataforma con excelente rendimiento y experiencia de usuario.
+          </p>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-10 items-center">
+          {/* Teléfono con proyecto */}
+          <div className="relative w-full lg:w-1/3 flex justify-center">
+            <div className="relative w-70 h-auto group">
+              <Image
+                src="/celular.png"
+                alt="Telefono"
+                width={300}
+                height={600}
+                className="z-0 transform transition-transform duration-500 group-hover:scale-90"
+              />
+              {/* Pantalla del teléfono con proyecto */}
+              <div className="absolute top-[3.5%] left-[8%] w-[84%] h-[92.5%] bg-white rounded-2xl overflow-hidden shadow-xl">
+                <Proyectos
+                  titulo="App de Productividad"
+                  descripcion="Aplicación móvil para gestión de tareas con sincronización en la nube y notificaciones inteligentes."
+                  imagen="/Proyectos/fondo_4.jpg"
+                  repositorio="https://github.com/tu_usuario/app-productividad"
+                  tipo="movil"
                 />
-                {/* Contenido dentro de la pantalla del teléfono */}
-                <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 flex items-center justify-center z-10">
-                    <div className="w-85 h-182 bg-white flex items-start justify-start p-2 rounded-s-4xl rounded-r-4xl shadow-lg">
-                        {/* Aquí va tu contenido */}
-                        <Proyectos
-                            titulo="Proyecto Móvil"
-                            descripcion="Descripción del proyecto móvil"
-                            imagen="/Proyectos/fondo_4.jpg"
-                            tipo="movil"
-                        />
-                    </div>
-                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contenido principal */}
+          <div className="w-full lg:w-2/3 space-y-8">
+            {/* Herramientas */}
+            <div className="bg-gray-50 p-8 rounded-2xl shadow-lg">
+                {/* Lenguajes de programacion / framworks / librerias que he utilizado en mis proyectos */}
+              <Herramientas
+                lenguajes={["Dart"]}
+                frameworks={["Flutter", "React Native"]}
+                librerias={["Provider", "Riverpod", "Bloc", "GetX"]}
+                tipo="movil"
+              />
             </div>
 
-            <div className="w-7xl h-200 flex flex-col">
-                <div className=" m-4 flex-10 text-2x1  ">
-                    <h1 className="ml-5 mt-8 text-3xl font-extrabold flex justify-start items-center ">DESARROLLO MOVIL</h1>
+            {/* Características */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
+                    <Smartphone className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">Multiplataforma</h3>
                 </div>
-                <div className="m-4 shadow-lg shadow-black rounded-4xl flex-40 flex flex-col items-start justify-start text-left p-6 relative overflow-hidden">
-                    <Image
-                        src="/fondo_3.jpg"
-                        alt="Fondo 3"
-                        width={600}
-                        height={400}
-                        className="absolute inset-0 w-full h-full object-cover z-0" />
-                    <div className=" m-6 relative z-10 w-full">
-                       
-                        <Herramientas
-                            lenguajes={["Dart"]}
-                            frameworks={["Flutter"]}
-                            librerias={["Provider", "Riverpod"]}
-                            tipo="movil"
-                        />
+                <p className="text-gray-600">
+                  Desarrollo apps que funcionan en iOS y Android con un solo código base, reduciendo costos y tiempo.
+                </p>
+              </div>
 
-                    </div>
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
+                    <Zap className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">Alto Rendimiento</h3>
                 </div>
-                {/* Lenguajes y frameworks Movil */}
-                <div className="flex gap-4 m-4 w-6xl h-20 rounded-2xl bg-black shadow-md shadow-black border justify-start items-center">
-                    <h1 className="ml-4 text-2xl font-bold text-white">Lenguajes :</h1>
-                    <Image
-                        src="/iconos/dart.png"
-                        alt="Dart"
-                        width={70}
-                        height={70}
-                        className="rounded-2xl"
-                    />
-                    <h1 className="text-2xl font-bold text-white">Frameworks :</h1>
+                <p className="text-gray-600">
+                  Aplicaciones optimizadas para un rendimiento nativo, con animaciones fluidas y tiempos de carga mínimos.
+                </p>
+              </div>
 
-                    <Image
-                        src="/iconos/flutter.png"
-                        alt="Flutter"
-                        width={70}
-                        height={70}
-                        className="rounded-2xl"
-                    />
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
+                    <Code className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">Código Limpio</h3>
                 </div>
+                <p className="text-gray-600">
+                  Arquitectura sólida siguiendo principios SOLID y patrones de diseño para un mantenimiento sencillo.
+                </p>
+              </div>
 
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
+                    <Cpu className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">Integraciones</h3>
+                </div>
+                <p className="text-gray-600">
+                  Conexión con APIs, Firebase, bases de datos locales y servicios de terceros para funcionalidades avanzadas.
+                </p>
+              </div>
             </div>
-        </section>
-
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
