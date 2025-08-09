@@ -31,10 +31,10 @@ export default function DesarrolloMovil() {
               {/* Pantalla del teléfono con proyecto */}
               <div className="absolute top-[3.5%] left-[8%] w-[84%] h-[92.5%] bg-white rounded-2xl overflow-hidden shadow-xl">
                 <Proyectos
-                  titulo="App de Productividad"
-                  descripcion="Aplicación móvil para gestión de tareas con sincronización en la nube y notificaciones inteligentes."
-                  imagen="/Proyectos/fondo_4.jpg"
-                  repositorio="https://github.com/tu_usuario/app-productividad"
+                  titulo="C.F.E - Calculo de Fuerzas Electricas"
+                  descripcion="Aplicación móvil para calcular fuerzas eléctricas entre cargas puntuales, con interfaz intuitiva y resultados precisos, ideal para estudiantes de física y profesionales."
+                  imagen={["/Proyectos/C.F.E.png","/Proyectos/(C.F.E)_1.png", "/Proyectos/(C.F.E)_2.png", "/Proyectos/(C.F.E)_3.jpg", "/Proyectos/(C.F.E)_4.png"]}
+                  repositorio="https://github.com/DeibyRamirez/Calculos-de-Fuerza-Electrica"
                   tipo="movil"
                 />
               </div>
@@ -49,7 +49,7 @@ export default function DesarrolloMovil() {
               <Herramientas
                 lenguajes={["Dart"]}
                 frameworks={["Flutter", "React Native"]}
-                librerias={["Provider", "Riverpod", "Bloc", "GetX"]}
+                librerias={["flutter_cube", "flutter_3d_controller", "video_player"]}
                 tipo="movil"
               />
             </div>

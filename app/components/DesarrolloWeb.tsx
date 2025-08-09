@@ -33,7 +33,7 @@ export default function DesarrolloWeb() {
                 <Proyectos
                   titulo="Plataforma E-commerce"
                   descripcion="Sistema completo de comercio electrónico con carrito de compras, pasarela de pagos y panel administrativo."
-                  imagen="/Proyectos/fondo_4.jpg"
+                  imagen={["/Proyectos/fondo_4.jpg"]}
                   repositorio="https://github.com/tu_usuario/plataforma-ecommerce"
                   tipo="web"
                 />
