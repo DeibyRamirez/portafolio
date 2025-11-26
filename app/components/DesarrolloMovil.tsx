@@ -2,8 +2,17 @@ import Image from "next/image";
 import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Smartphone, Code, Cpu, Zap } from "lucide-react";
+import { convertirGSUrl } from "./Conversion";
 
-export default function DesarrolloMovil() {
+export default async function DesarrolloMovil() {
+  const API = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${API}/proyectos`, { cache: 'no-store' });
+  const proyectos = await response.json();
+
+  // Filtrar proyectos móviles
+  const proyectosMovil = proyectos.filter((proyecto: any) => proyecto.tipo === "movil");
+  const proyectoPrincipal = proyectosMovil[0]; // el que mostramos en el celular
+
   return (
     <section id="d_movil" className="py-20 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
@@ -26,17 +35,21 @@ export default function DesarrolloMovil() {
                 alt="Telefono"
                 width={300}
                 height={600}
-                className="z-0 transform transition-transform duration-500 group-hover:scale-90"
+                className="z-0"
               />
               {/* Pantalla del teléfono con proyecto */}
               <div className="absolute top-[3.5%] left-[8%] w-[84%] h-[92.5%] bg-white rounded-2xl overflow-hidden shadow-xl">
-                <Proyectos
-                  titulo="C.F.E - Calculo de Fuerzas Electricas"
-                  descripcion="Aplicación móvil para calcular fuerzas eléctricas entre cargas puntuales, con interfaz intuitiva y resultados precisos, ideal para estudiantes de física y profesionales."
-                  imagen={["/Proyectos/C.F.E.png","/Proyectos/(C.F.E)_1.png", "/Proyectos/(C.F.E)_2.png", "/Proyectos/(C.F.E)_3.jpg", "/Proyectos/(C.F.E)_4.png"]}
-                  repositorio="https://github.com/DeibyRamirez/Calculos-de-Fuerza-Electrica"
-                  tipo="movil"
-                />
+                {proyectoPrincipal && (
+                  <Proyectos
+                    titulo={proyectoPrincipal.titulo}
+                    descripcion={proyectoPrincipal.descripcion}
+                    imagenes={proyectoPrincipal.imagenes.map((img: string) => convertirGSUrl(img))}
+                    repositorio={proyectoPrincipal.repositorio}
+                    tipo="movil"
+                  />
+
+                )}
+
               </div>
             </div>
           </div>
@@ -45,13 +58,17 @@ export default function DesarrolloMovil() {
           <div className="w-full lg:w-2/3 space-y-8">
             {/* Herramientas */}
             <div className="bg-gray-50 p-8 rounded-2xl shadow-lg">
-                {/* Lenguajes de programacion / framworks / librerias que he utilizado en mis proyectos */}
-              <Herramientas
-                lenguajes={["Dart"]}
-                frameworks={["Flutter", "React Native"]}
-                librerias={["flutter_cube", "flutter_3d_controller", "video_player"]}
-                tipo="movil"
-              />
+              {/* Lenguajes de programacion / framworks / librerias que he utilizado en mis proyectos */}
+              {proyectoPrincipal && (
+                <Herramientas
+                  lenguajes={proyectoPrincipal.lenguajes}
+                  frameworks={proyectoPrincipal.frameworks}
+                  librerias={proyectoPrincipal.librerias}
+                  tipo="movil"
+                />
+
+              )}
+
             </div>
 
             {/* Características */}

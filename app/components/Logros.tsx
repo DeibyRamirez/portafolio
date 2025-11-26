@@ -1,48 +1,14 @@
 import Image from "next/image";
 import Certificado from "./Certificado";
 import { Award, BookOpen, GraduationCap } from "lucide-react";
+import { convertirGSUrl } from "./Conversion";
 
-export default function Logros() {
-  // Lista de certificados
-  const certificados = [
-    {
-      titulo: "BLOCKCHAIN: CONTRATOS INTELIGENTES",
-      imagen: "/Certificados/Cert_Contratos Inteligentes.jpg",
-      institucion: "Servicio de Aprendizaje SENA",
-      fecha: "2024"
-    },
-    {
-      titulo: "CONSTRUCCION DE BASES DE DATOS CON MYSQL",
-      imagen: "/Certificados/Cert_Construccion Bases de Dstos MySQL.jpg",
-      institucion: "Servicio de Aprendizaje SENA",
-      fecha: "2024"
-    },
-    {
-      titulo: "BASES DE DATOS GENERALIDADES Y SISTEMAS DE GESTION",
-      imagen: "/Certificados/Cert_Bases de datos y Sistemas de Gestion.jpg",
-      institucion: "Servicio de Aprendizaje SENA",
-      fecha: "2024"
-    },
-    {
-      titulo: "ANALISIS PARA EL DESAROLLO MOVIL CON APP INVENTOR",
-      imagen: "/Certificados/Cert_Analisis Desarrollo movil con App Inventor.jpg",
-      institucion: "Servicio de Aprendizaje SENA",
-      fecha: "2024"
-    },
-    {
-      titulo: "Data Analysis with Python",
-      imagen: "/Certificados/Cert_Analisis de datos con Python.jpg",
-      institucion: "Coursera",
-      fecha: "2024"
-    },
-    {
-      titulo: "Inteligencia Artificial Nivel Basico",
-      imagen: "/Certificados/Cert_AI.jpg",
-      institucion: "Talento Tech",
-      fecha: "2024"
-    }
-  ];
+export default async function Logros() {
 
+  const API = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${API}/certificados`, { cache: 'no-store' });
+  const certificados = await response.json();
+  
   return (
     <section id="logros" className="py-20 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
@@ -96,15 +62,21 @@ export default function Logros() {
 
         {/* Certificados */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {certificados.map((cert, index) => (
-            <Certificado
-              key={index}
-              titulo={cert.titulo}
-              imagen={cert.imagen}
-              institucion={cert.institucion}
-              fecha={cert.fecha}
-            />
-          ))}
+          {Array.isArray(certificados) && certificados.length > 0 ? (
+            certificados.map((cert) => (
+              <Certificado
+                key={cert.id ?? cert.titulo}
+                titulo={cert.titulo}
+                imagen={convertirGSUrl(cert.imagen)}
+                institucion={cert.institucion}
+                fecha={cert.fecha}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500">
+              No hay certificaciones disponibles.
+            </div>
+          )}
 
           <div className="bg-gray-50 rounded-xl shadow-md p-8 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 hover:border-yellow-500 transition-colors duration-300">
             <h3 className="text-xl font-semibold text-gray-700 mb-2">¿Quieres ver más?</h3>

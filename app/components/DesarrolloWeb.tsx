@@ -2,39 +2,45 @@ import Image from "next/image";
 import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Globe, Cpu, Database, Layout } from "lucide-react";
+import { convertirGSUrl } from "./Conversion";
 
-export default function DesarrolloWeb() {
+export default async function DesarrolloWeb() {
+  const API = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${API}/proyectos`, { cache: "no-store" });
+  const proyectos = await response.json();
+
+  const proyectosWeb = proyectos.filter((proyecto: any) => proyecto.tipo === "web");
+  const proyectoPrincipal = proyectosWeb[0];
+
   return (
     <section id="d_web" className="py-20 px-6 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        {/* Encabezado con animación */}
-        <div className="text-center mb-16">
+      <div className="max-w-7xl mx-auto">
+        {/* Encabezado */}
+        <div className="text-center mb-20">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            <span className="inline-block bg-yellow-500 text-white px-4 py-2 rounded-lg">Desarrollo Web</span>
+            <span className="inline-block bg-yellow-500 text-white px-5 py-3 rounded-xl">
+              Desarrollo Web
+            </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Construyo aplicaciones web modernas, escalables y con excelente rendimiento utilizando las mejores tecnologías.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Construyo aplicaciones web modernas, escalables y con excelente rendimiento utilizando
+            tecnologías de alto nivel.
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row-reverse gap-12 items-center">
-          {/* Computadora con proyecto */}
+        <div className="flex flex-col lg:flex-row-reverse gap-16 items-center">
+          {/* Mockup Computadora */}
           <div className="relative w-full lg:w-1/2 flex justify-center">
-            <div className="relative w-full max-w-xl group">
-              <Image
-                src="/pc.png"
-                alt="Computadora"
-                width={800}
-                height={600}
-                className="z-0 transform transition-transform duration-500 group-hover:scale-90"
-              />
-              {/* Pantalla de la computadora con proyecto */}
-              <div className="absolute top-[20%] left-[6.5%] w-[87%] h-[47%] bg-white rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative w-full max-w-2xl group">
+              <Image src="/pc.png" alt="Computadora" width={900} height={700} className="z-0" />
+
+              {/* Pantalla del PC */}
+              <div className="absolute top-[19%] left-[6.5%] w-[87%] h-[48%] bg-white rounded-xl overflow-hidden shadow-2xl">
                 <Proyectos
-                  titulo="Plataforma E-commerce"
-                  descripcion="Sistema completo de comercio electrónico con carrito de compras, pasarela de pagos y panel administrativo."
-                  imagen={["/Proyectos/fondo_4.jpg"]}
-                  repositorio="https://github.com/tu_usuario/plataforma-ecommerce"
+                  titulo={proyectoPrincipal.titulo}
+                  descripcion={proyectoPrincipal.descripcion}
+                  imagenes={proyectoPrincipal.imagenes.map((img: string) => convertirGSUrl(img))}
+                  repositorio={proyectoPrincipal.repositorio}
                   tipo="web"
                 />
               </div>
@@ -42,66 +48,55 @@ export default function DesarrolloWeb() {
           </div>
 
           {/* Contenido principal */}
-          <div className="w-full lg:w-1/2 space-y-8">
+          <div className="w-full lg:w-1/2 space-y-10">
             {/* Herramientas */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
+            <div className="bg-white p-10 rounded-2xl shadow-lg border border-gray-100">
               <Herramientas
-                lenguajes={["JavaScript", "TypeScript", "HTML/CSS", "PHP"]}
-                frameworks={["React", "Next.js", "Laravel", "Express"]}
-                librerias={["Tailwind CSS", "Redux", "Axios", "JWT","Breeze"]}
+                lenguajes={proyectoPrincipal.lenguajes}
+                frameworks={proyectoPrincipal.frameworks}
+                librerias={proyectoPrincipal.librerias}
                 tipo="web"
               />
             </div>
 
             {/* Características */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Globe className="w-6 h-6" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {/* CARD */}
+              {[
+                {
+                  icon: <Globe className="w-6 h-6" />,
+                  title: "Enfoque en Backend",
+                  desc: "Especializado en APIs y lógica de negocio. El diseño visual lo perfecciono con apoyo de herramientas de IA.",
+                },
+                {
+                  icon: <Layout className="w-6 h-6" />,
+                  title: "Diseño Responsivo",
+                  desc: "Interfaces adaptables a cualquier dispositivo, desde móviles hasta pantallas XL.",
+                },
+                {
+                  icon: <Cpu className="w-6 h-6" />,
+                  title: "Rendimiento",
+                  desc: "Optimización SEO, carga rápida y experiencia de usuario fluida.",
+                },
+                {
+                  icon: <Database className="w-6 h-6" />,
+                  title: "Bases de Datos",
+                  desc: "Integración con MongoDB, PostgreSQL, Firebase y otras tecnologías.",
+                },
+              ].map((card, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-7 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex items-center gap-4 mb-4 whitespace-nowrap">
+                    <div className="p-3 bg-yellow-100 rounded-full text-yellow-500 shrink-0">
+                      {card.icon}
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-800">{card.title}</h3>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Enfoque en Backend</h3>
+                  <p className="text-gray-600 leading-relaxed">{card.desc}</p>
                 </div>
-                <p className="text-gray-600">
-                  Me especializo en el desarrollo backend, integrando APIs y lógica de negocio. Para el diseño visual, suelo apoyarme en herramientas de IA para lograr mejores resultados.
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Layout className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Diseño Responsivo</h3>
-                </div>
-                <p className="text-gray-600">
-                  Interfaces adaptables a cualquier dispositivo, desde móviles hasta pantallas grandes.
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Cpu className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Rendimiento</h3>
-                </div>
-                <p className="text-gray-600">
-                  Optimización de carga, SEO y experiencia de usuario para los mejores resultados.
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Database className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Bases de Datos</h3>
-                </div>
-                <p className="text-gray-600">
-                  Integración con MongoDB, PostgreSQL, Firebase y otros sistemas de almacenamiento.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
