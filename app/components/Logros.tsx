@@ -55,7 +55,7 @@ export default async function Logros() {
                 <GraduationCap className="w-8 h-8" />
               </div>
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">1</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-2">0</h3>
             <p className="text-gray-600">Títulos profesionales</p>
           </div>
         </div>
