@@ -3,10 +3,8 @@ import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Smartphone, Code, Cpu, Zap } from "lucide-react";
 import { convertirGSUrl } from "./Conversion";
-<<<<<<< HEAD
 import { FeatureItem } from "./GameDev";
-=======
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
+
 
 export default async function DesarrolloMovil() {
   const API = process.env.NEXT_PUBLIC_API_URL;
@@ -74,8 +72,6 @@ export default async function DesarrolloMovil() {
               )}
 
             </div>
-
-<<<<<<< HEAD
             {/* Grid de Características */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FeatureItem
@@ -103,61 +99,6 @@ export default async function DesarrolloMovil() {
         </div>
       </div >
     </section >
-=======
-            {/* Características */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Smartphone className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Multiplataforma</h3>
-                </div>
-                <p className="text-gray-600">
-                  Desarrollo apps que funcionan en iOS y Android con un solo código base, reduciendo costos y tiempo.
-                </p>
-              </div>
 
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Zap className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Alto Rendimiento</h3>
-                </div>
-                <p className="text-gray-600">
-                  Aplicaciones optimizadas para un rendimiento nativo, con animaciones fluidas y tiempos de carga mínimos.
-                </p>
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Code className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Código Limpio</h3>
-                </div>
-                <p className="text-gray-600">
-                  Arquitectura sólida siguiendo principios SOLID y patrones de diseño para un mantenimiento sencillo.
-                </p>
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-full text-yellow-500">
-                    <Cpu className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800">Integraciones</h3>
-                </div>
-                <p className="text-gray-600">
-                  Conexión con APIs, Firebase, bases de datos locales y servicios de terceros para funcionalidades avanzadas.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
   );
 }

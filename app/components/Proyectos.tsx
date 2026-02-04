@@ -1,10 +1,6 @@
 "use client";
-import Image from "next/image";
-<<<<<<< HEAD
 import { Gamepad2, Github, Trophy } from "lucide-react";
-=======
-import { Github } from "lucide-react";
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 interface ProyectosProps {
@@ -12,11 +8,7 @@ interface ProyectosProps {
   descripcion: string;
   imagenes: string[];
   repositorio: string;
-<<<<<<< HEAD
   tipo: "movil" | "web" | "game_dev";
-=======
-  tipo: "movil" | "web";
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
 }
 
 export default function Proyectos({
@@ -88,7 +80,7 @@ export default function Proyectos({
     );
   }
 
-<<<<<<< HEAD
+
   // NUEVO: RENDER GAME DEV
   if (tipo === "game_dev") {
     return (
@@ -134,8 +126,6 @@ export default function Proyectos({
     );
   }
 
-=======
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
   // Versión para tipo web (sin carrusel)
   return (
     <div className="h-full flex flex-col md:flex-row transform transition-transform duration-500 hover:scale-105">

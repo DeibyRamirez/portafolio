@@ -10,11 +10,7 @@ export default async function Logros() {
   const certificados = await response.json();
   
   return (
-<<<<<<< HEAD
     <section id="logros" className="py-20 px-6 bg-gray-50">
-=======
-    <section id="logros" className="py-20 px-6 bg-white">
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
       <div className="max-w-6xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-16">
@@ -30,11 +26,10 @@ export default async function Logros() {
 
         {/* Estadísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-<<<<<<< HEAD
+
+
           <div className="bg-white p-6 rounded-xl shadow-md text-center">
-=======
-          <div className="bg-gray-50 p-6 rounded-xl shadow-md text-center">
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
+
             <div className="flex justify-center mb-4">
               <div className="p-4 bg-yellow-100 rounded-full text-yellow-500">
                 <Award className="w-8 h-8" />
@@ -46,12 +41,7 @@ export default async function Logros() {
             </h3>
             <p className="text-gray-600">Certificaciones obtenidas</p>
           </div>
-
-<<<<<<< HEAD
           <div className="bg-white p-6 rounded-xl shadow-md text-center">
-=======
-          <div className="bg-gray-50 p-6 rounded-xl shadow-md text-center">
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
             <div className="flex justify-center mb-4">
               <div className="p-4 bg-yellow-100 rounded-full text-yellow-500">
                 <BookOpen className="w-8 h-8" />
@@ -60,12 +50,7 @@ export default async function Logros() {
             <h3 className="text-3xl font-bold text-gray-900 mb-2">1</h3>
             <p className="text-gray-600">Años de experiencia</p>
           </div>
-
-<<<<<<< HEAD
           <div className="bg-white p-6 rounded-xl shadow-md text-center">
-=======
-          <div className="bg-gray-50 p-6 rounded-xl shadow-md text-center">
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
             <div className="flex justify-center mb-4">
               <div className="p-4 bg-yellow-100 rounded-full text-yellow-500">
                 <GraduationCap className="w-8 h-8" />

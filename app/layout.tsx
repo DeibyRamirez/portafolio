@@ -31,10 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <a href="#inicio" className="text-gray-600 hover:text-yellow-500 transition-colors duration-300 font-medium">Inicio</a>
                 <a href="#d_movil" className="text-gray-600 hover:text-yellow-500 transition-colors duration-300 font-medium">Móvil</a>
                 <a href="#d_web" className="text-gray-600 hover:text-yellow-500 transition-colors duration-300 font-medium">Web</a>
-<<<<<<< HEAD
                 <a href="#d_game_dev" className="text-gray-600 hover:text-yellow-500 transition-colors duration-300 font-medium">Game Dev</a>
-=======
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
                 <a href="#logros" className="text-gray-600 hover:text-yellow-500 transition-colors duration-300 font-medium">Certificaciones</a>
               </div>
             </nav>

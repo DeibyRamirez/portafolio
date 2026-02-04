@@ -102,7 +102,7 @@ export default async function GameDev() {
 // Componente pequeño para las cards de características
 export function FeatureItem({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
   return (
-    <div className="p-5 bg-gray-50 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
+    <div className="p-5 bg-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
       <div className="flex items-center gap-3 mb-2 text-yellow-600">
         {icon}
         <span className="font-bold uppercase text-xs tracking-wider">{title}</span>

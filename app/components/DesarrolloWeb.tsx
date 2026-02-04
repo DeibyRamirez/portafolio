@@ -3,10 +3,7 @@ import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Globe, Cpu, Database, Layout } from "lucide-react";
 import { convertirGSUrl } from "./Conversion";
-<<<<<<< HEAD
 import { FeatureItem } from "./GameDev";
-=======
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
 
 export default async function DesarrolloWeb() {
   const API = process.env.NEXT_PUBLIC_API_URL;
@@ -63,8 +60,6 @@ export default async function DesarrolloWeb() {
               />
             </div>
 
-<<<<<<< HEAD
-
             {/* Grid de Características */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FeatureItem
@@ -87,46 +82,6 @@ export default async function DesarrolloWeb() {
                 title="Bases de Datos"
                 desc="Integración con MongoDB, PostgreSQL, Firebase y otras tecnologías."
               />
-=======
-            {/* Características */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {/* CARD */}
-              {[
-                {
-                  icon: <Globe className="w-6 h-6" />,
-                  title: "Enfoque en Backend",
-                  desc: "Especializado en APIs y lógica de negocio. El diseño visual lo perfecciono con apoyo de herramientas de IA.",
-                },
-                {
-                  icon: <Layout className="w-6 h-6" />,
-                  title: "Diseño Responsivo",
-                  desc: "Interfaces adaptables a cualquier dispositivo, desde móviles hasta pantallas XL.",
-                },
-                {
-                  icon: <Cpu className="w-6 h-6" />,
-                  title: "Rendimiento",
-                  desc: "Optimización SEO, carga rápida y experiencia de usuario fluida.",
-                },
-                {
-                  icon: <Database className="w-6 h-6" />,
-                  title: "Bases de Datos",
-                  desc: "Integración con MongoDB, PostgreSQL, Firebase y otras tecnologías.",
-                },
-              ].map((card, index) => (
-                <div
-                  key={index}
-                  className="bg-white p-7 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-center gap-4 mb-4 whitespace-nowrap">
-                    <div className="p-3 bg-yellow-100 rounded-full text-yellow-500 shrink-0">
-                      {card.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-800">{card.title}</h3>
-                  </div>
-                  <p className="text-gray-600 leading-relaxed">{card.desc}</p>
-                </div>
-              ))}
->>>>>>> e365962ac0c94f7c512d327227c2e628a7b1b315
             </div>
           </div>
         </div>
