@@ -3,19 +3,18 @@ import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Cpu, Gamepad2, Ghost, Timer, Users } from "lucide-react";
 import { convertirGSUrl } from "./Conversion";
+import { safeFetchJson } from "@/app/lib/api";
 
 export default async function GameDev() {
-  const API = process.env.NEXT_PUBLIC_API_URL;
-  const response = await fetch(`${API}/proyectos`, { cache: 'no-store' });
-  const proyectos = await response.json();
+  const proyectosData = await safeFetchJson<any[]>("/proyectos");
+  const proyectos = Array.isArray(proyectosData) ? proyectosData : [];
 
   const proyectosGame = proyectos.filter((proyecto: any) => proyecto.tipo === "game_dev");
   const proyectoPrincipal = proyectosGame[0];
 
   return (
-    <section id="d_game_dev" className="py-20 px-6 bg-white">
-      <div className="max-w-6xl mx-auto">
-        {/* Encabezado */}
+    <section id="d_game_dev" className="px-6 py-20 md:px-8">
+      <div className="section-shell mx-auto max-w-6xl rounded-3xl p-8 md:p-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             <span className="inline-block bg-yellow-500 text-white px-4 py-2 rounded-lg">Game Dev</span>
@@ -26,13 +25,8 @@ export default async function GameDev() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12 items-center">
-
-          {/* MOCKUP DE DISPOSITIVO (Smartphone/Handheld) */}
           <div className="relative w-full lg:w-1/2 flex justify-center">
-            {/* Carcasa del dispositivo */}
             <div className="relative w-[500px] h-[600px] bg-gray-900 rounded-[3rem] p-4 shadow-2xl border-[8px] border-gray-800">
-
-              {/* Pantalla interna */}
               <div className="w-full h-full bg-black rounded-[2rem] overflow-hidden relative border border-gray-700">
                 {proyectoPrincipal ? (
                   <Proyectos
@@ -49,11 +43,9 @@ export default async function GameDev() {
                 )}
               </div>
             </div>
-            {/* Brillo decorativo detrás del dispositivo */}
             <div className="absolute -z-10 w-64 h-64 bg-yellow-200 blur-[100px] opacity-50"></div>
           </div>
 
-          {/* Contenido Técnico */}
           <div className="w-full lg:w-1/2 space-y-5">
             <div className="bg-gray-50 p-8 rounded-2xl shadow-lg border-l-4 border-yellow-500">
               <h3 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -69,7 +61,6 @@ export default async function GameDev() {
               )}
             </div>
 
-            {/* Grid de Características */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FeatureItem
                 icon={<Timer className="w-5 h-5" />}

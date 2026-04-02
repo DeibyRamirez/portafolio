@@ -2,17 +2,15 @@ import Image from "next/image";
 import Certificado from "./Certificado";
 import { Award, BookOpen, GraduationCap } from "lucide-react";
 import { convertirGSUrl } from "./Conversion";
+import { safeFetchJson } from "@/app/lib/api";
 
 export default async function Logros() {
-
-  const API = process.env.NEXT_PUBLIC_API_URL;
-  const response = await fetch(`${API}/certificados`, { cache: 'no-store' });
-  const certificados = await response.json();
+  const certificadosData = await safeFetchJson<any[]>("/certificados");
+  const certificados = Array.isArray(certificadosData) ? certificadosData : [];
   
   return (
-    <section id="logros" className="py-20 px-6 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        {/* Encabezado */}
+    <section id="logros" className="px-6 py-20 md:px-8">
+      <div className="section-shell mx-auto max-w-6xl rounded-3xl p-8 md:p-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             <span className="inline-block bg-yellow-500 text-white px-4 py-2 rounded-lg">
@@ -24,18 +22,13 @@ export default async function Logros() {
           </p>
         </div>
 
-        {/* Estadísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-
-
           <div className="bg-white p-6 rounded-xl shadow-md text-center">
-
             <div className="flex justify-center mb-4">
               <div className="p-4 bg-yellow-100 rounded-full text-yellow-500">
                 <Award className="w-8 h-8" />
               </div>
             </div>
-            {/* Aquí mostramos la cantidad */}
             <h3 className="text-3xl font-bold text-gray-900 mb-2">
               {certificados.length}
             </h3>
@@ -61,7 +54,6 @@ export default async function Logros() {
           </div>
         </div>
 
-        {/* Certificados */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Array.isArray(certificados) && certificados.length > 0 ? (
             certificados.map((cert) => (
