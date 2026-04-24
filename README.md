@@ -13,6 +13,7 @@ Portafolio FullStack construido con Next.js para presentar proyectos de forma pr
 - [Variables de entorno](#variables-de-entorno)
 - [Ejecucion local](#ejecucion-local)
 - [Docker](#docker)
+- [CI/CD](#cicd)
 - [Roadmap](#roadmap)
 
 ## Resumen
@@ -138,8 +139,8 @@ PORT=3000
 ## Ejecucion local
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Abrir en navegador: `http://localhost:3000`
@@ -147,8 +148,8 @@ Abrir en navegador: `http://localhost:3000`
 Build de produccion:
 
 ```bash
-npm run build
-npm start
+pnpm build
+pnpm start
 ```
 
 ## Docker
@@ -173,12 +174,43 @@ NEXT_PUBLIC_API_URL=http://localhost:3000/api
 PORT=3000
 ```
 
+## CI/CD
+
+Voy a empezar a aplicar CI/CD en todos mis proyectos para validar cada cambio antes de publicarlo.
+
+### Que significa
+
+- CI: Integracion Continua. Automatiza validaciones como `lint` y `build` en cada push o pull request.
+- CD: Entrega o Despliegue Continuo. Automatiza la publicacion del proyecto cuando el flujo ya paso las validaciones.
+
+### Para que me sirve
+
+- Evitar subir codigo que no compile.
+- Detectar errores antes de llegar a produccion.
+- Reducir fallos manuales al revisar cambios.
+- Mantener una base tecnica mas ordenada y confiable.
+
+### Como lo estoy aplicando aqui
+
+- Workflow de GitHub Actions en `.github/workflows/ci.yml`.
+- Validacion automatica con `pnpm lint` y `pnpm build`.
+- Documentacion tecnica en `docs/ci-cd.md`.
+
+### Regla que voy a seguir desde ahora
+
+Todo proyecto nuevo o existente debe tener al menos:
+
+- una rama de trabajo,
+- una verificacion automatica en CI,
+- y un build exitoso antes de mergear.
+
 ## Roadmap
 
 - Agregar multiples proyectos por categoria con filtros.
 - Publicar seccion de ciberseguridad con laboratorios y writeups.
 - Mejorar SEO tecnico (metadata extendida, Open Graph y schema).
 - Incorporar CI para calidad (`build`, `lint`, `type-check`).
+- Ampliar el flujo de CI/CD con despliegue automatizado segun la plataforma elegida.
 
 ---
 

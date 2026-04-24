@@ -19,7 +19,7 @@ export default function Inicio() {
       <div className="relative w-64 h-64 md:w-80 md:h-80 group">
         <div className="absolute inset-0 rounded-full bg-yellow-500 blur-md opacity-30 group-hover:opacity-50 transition-all duration-500"></div>
         <Image
-          src="/yo_fondo.jpeg"
+          src="/YO.jpg"
           alt="Foto de Perfil"
           width={320}
           height={320}
