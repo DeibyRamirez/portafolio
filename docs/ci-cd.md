@@ -19,7 +19,6 @@ CD significa `Entrega Continua` o `Despliegue Continuo`.
 Sirve para llevar el proyecto a un entorno de publicacion de forma automatica o semiautomatica. Ejemplos comunes:
 
 - Desplegar en Vercel.
-- Desplegar en Netlify.
 - Publicar en un servidor propio o VPS.
 
 En este portafolio dejamos la CI lista y la CD dependera de la plataforma que uses para publicar.

@@ -210,7 +210,7 @@ Todo proyecto nuevo o existente debe tener al menos:
 - Publicar seccion de ciberseguridad con laboratorios y writeups.
 - Mejorar SEO tecnico (metadata extendida, Open Graph y schema).
 - Incorporar CI para calidad (`build`, `lint`, `type-check`).
-- Ampliar el flujo de CI/CD con despliegue automatizado segun la plataforma elegida.
+- Ampliar el flujo de CI/CD con despliegue automatizado en Vercel.
 
 ---
 
