@@ -1,16 +1,13 @@
-import clientePromise, { COLLECCIONES } from "@/app/lib/database";
-
-const cliente = clientePromise;
-const collection = COLLECCIONES.CERTIFICADOS;
+import { COLLECCIONES, getMongoClient } from "@/app/lib/database";
 
 
 export async function GET (){
     try {
-        const clienteMongo = await cliente;
+        const clienteMongo = await getMongoClient();
         const db = clienteMongo.db(
             "Portafolio"
         );
-        const coleccionCertificados = db.collection(collection);
+        const coleccionCertificados = db.collection(COLLECCIONES.CERTIFICADOS);
         const certificados = await coleccionCertificados.find({}).toArray();
         return new Response(JSON.stringify(certificados), {
             status: 200,
