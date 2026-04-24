@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { Box, Code, Cpu, Gamepad2, Layers, PenTool, Zap } from "lucide-react";
+import { Box, Code, Gamepad2, Layers, PenTool, Zap } from "lucide-react";
 
 interface HerramientasProps {
   lenguajes: string[];

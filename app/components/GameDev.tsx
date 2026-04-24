@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Cpu, Gamepad2, Ghost, Timer, Users } from "lucide-react";
@@ -6,10 +5,21 @@ import { convertirGSUrl } from "./Conversion";
 import { safeFetchJson } from "@/app/lib/api";
 
 export default async function GameDev() {
-  const proyectosData = await safeFetchJson<any[]>("/proyectos");
+  type Proyecto = {
+    tipo?: string;
+    titulo: string;
+    descripcion: string;
+    imagenes: string[];
+    repositorio?: string;
+    lenguajes: string[];
+    frameworks: string[];
+    librerias: string[];
+  };
+
+  const proyectosData = await safeFetchJson<Proyecto[]>("/proyectos");
   const proyectos = Array.isArray(proyectosData) ? proyectosData : [];
 
-  const proyectosGame = proyectos.filter((proyecto: any) => proyecto.tipo === "game_dev");
+  const proyectosGame = proyectos.filter((proyecto) => proyecto.tipo === "game_dev");
   const proyectoPrincipal = proyectosGame[0];
 
   return (
@@ -33,7 +43,7 @@ export default async function GameDev() {
                     titulo={proyectoPrincipal.titulo}
                     descripcion={proyectoPrincipal.descripcion}
                     imagenes={proyectoPrincipal.imagenes.map((img: string) => convertirGSUrl(img))}
-                    repositorio={proyectoPrincipal.repositorio}
+                    repositorio={proyectoPrincipal.repositorio ?? ""}
                     tipo="game_dev"
                   />
                 ) : (

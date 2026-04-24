@@ -2,7 +2,6 @@
 
 import { ArrowRight, Github, Linkedin, Mail, FileText } from "lucide-react";
 import Image from "next/image";
-import BotonCV from "./BotonCV";
 import { useState } from "react";
 
 export const Cv = "cv-deiby.pdf";
