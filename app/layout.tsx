@@ -47,6 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   <a href="#arquitectura" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Arquitectura</a>
                   <a href="#d_movil" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Movil</a>
                   <a href="#d_web" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Web</a>
+                  <a href="#d_automatizaciones" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Automatizaciones</a>
                   <a href="#d_game_dev" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Game Dev</a>
                   <a href="#d_ciberseguridad" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Ciberseguridad</a>
                   <a href="#logros" className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-[color:var(--brand)]">Logros</a>

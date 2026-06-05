@@ -1,25 +1,16 @@
 import Image from "next/image";
-import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Smartphone, Code, Cpu, Zap } from "lucide-react";
-import { convertirGSUrl } from "./Conversion";
+import { convertirGSUrl } from "../components/Conversion";
 import { FeatureItem } from "./GameDev";
 import { safeFetchJson } from "@/app/lib/api";
-
+import { DesarrolloInterface } from "../models/Desarrollos";
+import Proyectos from "./Proyectos";
 
 export default async function DesarrolloMovil() {
-  type Proyecto = {
-    tipo?: string;
-    titulo: string;
-    descripcion: string;
-    imagenes: string[];
-    repositorio?: string;
-    lenguajes: string[];
-    frameworks: string[];
-    librerias: string[];
-  };
+  
 
-  const proyectosData = await safeFetchJson<Proyecto[]>("/proyectos");
+  const proyectosData = await safeFetchJson<DesarrolloInterface[]>("/proyectos");
   const proyectos = Array.isArray(proyectosData) ? proyectosData : [];
 
   // Filtrar proyectos móviles

@@ -1,11 +1,6 @@
-interface CertificadoProps {
-  titulo: string;
-  imagen: string;
-  institucion?: string;
-  fecha?: string;
-}
+import { CertificadoInterface } from "../models/Certificados";
 
-export default function Certificado({ titulo, imagen, institucion = "Institución", fecha = "Fecha" }: CertificadoProps) {
+export default function Certificado({ titulo, imagen, institucion = "Institución", fecha = "Fecha" }: CertificadoInterface) {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
       <div className="overflow-hidden">

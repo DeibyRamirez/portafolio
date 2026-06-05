@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Cv } from "./Inicio";
+import { Cv } from "../pages/Inicio";
 
 
 export default function BotonCV() {

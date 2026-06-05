@@ -1,24 +1,15 @@
 import Image from "next/image";
-import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Globe, Cpu, Database, Layout } from "lucide-react";
-import { convertirGSUrl } from "./Conversion";
+import { convertirGSUrl } from "../components/Conversion";
 import { FeatureItem } from "./GameDev";
 import { safeFetchJson } from "@/app/lib/api";
+import { DesarrolloInterface } from "../models/Desarrollos";
+import Proyectos from "./Proyectos";
 
 export default async function DesarrolloWeb() {
-  type Proyecto = {
-    tipo?: string;
-    titulo: string;
-    descripcion: string;
-    imagenes: string[];
-    repositorio?: string;
-    lenguajes: string[];
-    frameworks: string[];
-    librerias: string[];
-  };
 
-  const proyectosData = await safeFetchJson<Proyecto[]>("/proyectos");
+  const proyectosData = await safeFetchJson<DesarrolloInterface[]>("/proyectos");
   const proyectos = Array.isArray(proyectosData) ? proyectosData : [];
 
   const proyectosWeb = proyectos.filter((proyecto) => proyecto.tipo === "web");
@@ -39,7 +30,7 @@ export default async function DesarrolloWeb() {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row-reverse gap-16 items-center">
+        <div className="flex flex-col lg:flex-row-reverse gap-5 items-center">
           <div className="relative w-full lg:w-1/2 flex justify-center">
             <div className="relative w-full max-w-2xl group">
               <Image src="/pc.png" alt="Computadora" width={900} height={700} className="z-0" />

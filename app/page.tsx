@@ -1,10 +1,12 @@
-import Inicio from "./components/Inicio";
-import Arquitectura from "./components/Arquitectura";
-import DesarrolloMovil from "./components/DesarrolloMovil";
-import DesarrolloWeb from "./components/DesarrolloWeb";
-import Logros from "./components/Logros";
-import GameDev from "./components/GameDev";
-import Ciberseguridad from "./components/Ciberseguridad";
+import Inicio from "./pages/Inicio";
+import Arquitectura from "./pages/Arquitectura";
+import DesarrolloMovil from "./pages/DesarrolloMovil";
+import DesarrolloWeb from "./pages/DesarrolloWeb";
+import Logros from "./pages/Logros";
+import GameDev from "./pages/GameDev";
+import Ciberseguridad from "./pages/Ciberseguridad";
+import Automatizaciones from "./pages/Automatizaciones";
+
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,7 @@ export default function HomePage() {
       <Arquitectura />
       <DesarrolloMovil />
       <DesarrolloWeb />
+      <Automatizaciones/> 
       <GameDev />
       <Ciberseguridad />
       <Logros />

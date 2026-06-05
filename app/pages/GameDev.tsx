@@ -1,22 +1,13 @@
-import Proyectos from "./Proyectos";
 import Herramientas from "./Herramientas";
 import { Cpu, Gamepad2, Ghost, Timer, Users } from "lucide-react";
-import { convertirGSUrl } from "./Conversion";
+import { convertirGSUrl } from "../components/Conversion";
 import { safeFetchJson } from "@/app/lib/api";
+import { DesarrolloInterface } from "../models/Desarrollos";
+import Proyectos from "./Proyectos";
 
 export default async function GameDev() {
-  type Proyecto = {
-    tipo?: string;
-    titulo: string;
-    descripcion: string;
-    imagenes: string[];
-    repositorio?: string;
-    lenguajes: string[];
-    frameworks: string[];
-    librerias: string[];
-  };
 
-  const proyectosData = await safeFetchJson<Proyecto[]>("/proyectos");
+  const proyectosData = await safeFetchJson<DesarrolloInterface[]>("/proyectos");
   const proyectos = Array.isArray(proyectosData) ? proyectosData : [];
 
   const proyectosGame = proyectos.filter((proyecto) => proyecto.tipo === "game_dev");
@@ -34,7 +25,7 @@ export default async function GameDev() {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 items-center">
+        <div className="flex flex-col lg:flex-row gap-5 items-center">
           <div className="relative w-full lg:w-1/2 flex justify-center">
             <div className="relative w-[500px] h-[600px] bg-gray-900 rounded-[3rem] p-4 shadow-2xl border-[8px] border-gray-800">
               <div className="w-full h-full bg-black rounded-[2rem] overflow-hidden relative border border-gray-700">

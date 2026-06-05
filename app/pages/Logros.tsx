@@ -1,18 +1,13 @@
 import Certificado from "./Certificado";
 import { Award, BookOpen, GraduationCap } from "lucide-react";
-import { convertirGSUrl } from "./Conversion";
+import { convertirGSUrl } from "../components/Conversion";
 import { safeFetchJson } from "@/app/lib/api";
+import { CertificadoInterface } from "../models/Certificados";
 
 export default async function Logros() {
-  type CertificadoData = {
-    id?: string;
-    titulo: string;
-    imagen: string;
-    institucion?: string;
-    fecha?: string;
-  };
+  
 
-  const certificadosData = await safeFetchJson<CertificadoData[]>("/certificados");
+  const certificadosData = await safeFetchJson<CertificadoInterface[]>("/certificados");
   const certificados = Array.isArray(certificadosData) ? certificadosData : [];
   
   return (
