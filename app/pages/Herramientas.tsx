@@ -134,6 +134,46 @@ export default function Herramientas({
       ];
     }
 
+    if (tipo === "automatizacion") {
+      return [
+        {
+          icono: <Code className={iconSize} />,
+          titulo: "Lenguajes & Scripts",
+          items: lenguajes,
+        },
+        {
+          icono: <Layers className={iconSize} />,
+          titulo: "Orquestación",
+          items: frameworks,
+        },
+        {
+          icono: <Zap className={iconSize} />,
+          titulo: "Integraciones",
+          items: librerias,
+        },
+      ];
+    }
+
+    if (tipo === "ciberseguridad") {
+      return [
+        {
+          icono: <Code className={iconSize} />,
+          titulo: "Herramientas",
+          items: lenguajes,
+        },
+        {
+          icono: <Layers className={iconSize} />,
+          titulo: "Metodologías",
+          items: frameworks,
+        },
+        {
+          icono: <Zap className={iconSize} />,
+          titulo: "Plataformas",
+          items: librerias,
+        },
+      ];
+    }
+
     // web (por defecto): limita librerías a 5
     return [
       {
@@ -155,7 +195,13 @@ export default function Herramientas({
   })();
 
   const titulo =
-    tipo === "game_dev" ? "Pipeline de Desarrollo" : "Tecnologías que utilizo";
+    tipo === "game_dev"
+      ? "Pipeline de Desarrollo"
+      : tipo === "automatizacion"
+        ? "Stack de Automatización"
+        : tipo === "ciberseguridad"
+          ? "Stack de Seguridad"
+          : "Tecnologías que utilizo";
 
   return (
     <div className="space-y-6">

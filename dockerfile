@@ -14,14 +14,14 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 RUN npm install -g pnpm
 
-# 1. Definimos que aceptaremos un argumento llamado MONGO_URI
-ARG MONGO_URI
+# 1. Definimos que aceptaremos un argumento llamado MONGODB_URI
+ARG MONGODB_URI
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # 2. Convertimos ese argumento en una variable de entorno para el build
-ENV MONGO_URI=$MONGO_URI
+ENV MONGODB_URI=$MONGODB_URI
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN pnpm run build

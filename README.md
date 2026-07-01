@@ -5,7 +5,6 @@ Portafolio FullStack construido con Next.js para presentar proyectos de forma pr
 ## Tabla de contenido
 
 - [Resumen](#resumen)
-- [Novedades del frontend](#novedades-del-frontend)
 - [Stack tecnologico](#stack-tecnologico)
 - [Arquitectura del proyecto](#arquitectura-del-proyecto)
 - [Estructura de carpetas](#estructura-de-carpetas)
@@ -13,44 +12,18 @@ Portafolio FullStack construido con Next.js para presentar proyectos de forma pr
 - [Variables de entorno](#variables-de-entorno)
 - [Ejecucion local](#ejecucion-local)
 - [Docker](#docker)
-- [CI/CD](#cicd)
+- [Documentacion](#documentacion)
 - [Roadmap](#roadmap)
 
 ## Resumen
 
 Este repositorio implementa un portafolio web con estas caracteristicas clave:
 
-- Organizacion por secciones tecnicas (movil, web, game dev y ciberseguridad).
+- Organizacion por secciones tecnicas (movil, web, game dev, automatizaciones, ciberseguridad).
 - Integracion con MongoDB para proyectos y certificados.
-- Consumo de datos en tiempo real mediante API routes internas.
+- Fetch unico de datos en la pagina principal con filtrado por categoria.
+- Selector de multiples proyectos por area tecnica.
 - Render moderno con Next.js App Router y componentes reutilizables.
-
-## Novedades del frontend
-
-Se aplico una mejora de estructura visual y de informacion para que el portafolio se vea mas profesional y sea facil de escalar.
-
-### Cambios principales
-
-- Nueva narrativa de pagina: `Inicio -> Arquitectura -> Areas tecnicas -> Logros`.
-- Seccion nueva **Arquitectura** para explicar la vision y escalabilidad del repositorio.
-- Seccion nueva **Ciberseguridad** lista para incorporar labs, writeups y proyectos.
-- Header optimizado:
-  - Desktop con menu compacto y dropdown `Secciones` al pasar el mouse.
-  - Movil con menu reducido y lista desplegable.
-- Estilos globales refinados con variables CSS de marca y contenedor visual reutilizable (`section-shell`).
-
-### Archivos actualizados
-
-- `app/layout.tsx`
-- `app/page.tsx`
-- `app/globals.css`
-- `app/components/Inicio.tsx`
-- `app/components/DesarrolloMovil.tsx`
-- `app/components/DesarrolloWeb.tsx`
-- `app/components/GameDev.tsx`
-- `app/components/Logros.tsx`
-- `app/components/Arquitectura.tsx`
-- `app/components/Ciberseguridad.tsx`
 
 ## Stack tecnologico
 
@@ -60,69 +33,106 @@ Se aplico una mejora de estructura visual y de informacion para que el portafoli
 | React 19 | Construccion de componentes UI |
 | TypeScript | Tipado estatico y mantenibilidad |
 | Tailwind CSS v4 | Sistema de estilos y utilidades |
-| MongoDB + Mongoose | Persistencia de datos |
-| Firebase Storage | Almacenamiento de imagenes/recursos |
+| MongoDB (driver nativo) | Persistencia de datos |
+| Firebase Storage | Almacenamiento de imagenes (URLs `gs://`) |
 | Lucide React | Iconografia |
 
 ## Arquitectura del proyecto
 
 ### 1) Capa de datos
 
-- Conexion centralizada a MongoDB desde `app/lib/database.ts`.
-- Modelos consultados por API routes internas.
+- Conexion centralizada en `app/lib/database.ts`.
+- Funciones reutilizables en `app/lib/data/` (`getProyectos`, `getCertificados`).
+- Mapeo de documentos MongoDB a interfaces TypeScript.
 
 ### 2) Capa API
 
-- Endpoints internos en `app/api/*`.
-- Respuestas JSON consumidas por el frontend.
+- Endpoints internos en `app/api/*` que reutilizan la capa de datos.
+- Respuestas JSON para consumo externo o integraciones futuras.
 
 ### 3) Capa presentacion
 
-- Componentes modulares en `app/components/*`.
-- Secciones desacopladas para crecimiento por categoria.
-- Integracion de recursos multimedia y tarjetas de proyecto.
+- Compositor en `app/page.tsx` con fetch unico y props a secciones.
+- Secciones modulares en `app/pages/*`.
+- Componentes interactivos en `app/components/*`.
 
 ### 4) Utilidades
 
-- `app/lib/api.ts`: utilidades para construir URL base y consumir API de forma segura.
+- `app/lib/api.ts`: cliente HTTP interno (`safeFetchJson`).
 - `app/components/Conversion.tsx`: conversion de rutas `gs://` a URL publica de Firebase.
+
+Documentacion completa: [`docs/arquitectura.md`](docs/arquitectura.md)
 
 ## Estructura de carpetas
 
 ```text
 app/
   api/
-    certificados/route.ts
-    proyectos/route.ts
+    certificados/
+      route.ts
+      [id]/route.ts
+    proyectos/
+      route.ts
+      [id]/route.ts
   components/
-    Arquitectura.tsx
-    Ciberseguridad.tsx
-    DesarrolloMovil.tsx
-    DesarrolloWeb.tsx
-    GameDev.tsx
-    Herramientas.tsx
-    Inicio.tsx
-    Logros.tsx
-    Proyectos.tsx
+    ContenedorProyectoCategoria.tsx
+    Conversion.tsx
   lib/
+    api/
+      auth.ts
+      responses.ts
+      validate.ts
+      revalidate.ts
     api.ts
     database.ts
-  globals.css
+    data/
+      certificados.ts
+      proyectos.ts
+  models/
+  pages/
+    Inicio.tsx
+    Arquitectura.tsx
+    DesarrolloMovil.tsx
+    DesarrolloWeb.tsx
+    Automatizaciones.tsx
+    GameDev.tsx
+    Ciberseguridad.tsx
+    Logros.tsx
+    Proyectos.tsx
+    Herramientas.tsx
   layout.tsx
   page.tsx
-public/
-README.md
+docs/
+  api.md
+  arquitectura.md
+  ci-cd.md
 ```
 
-## API interna
+## API REST
 
-### `GET /api/proyectos`
+La API expone CRUD completo sobre las colecciones `proyectos` y `certificados`.
 
-Retorna el listado de proyectos (movil, web, game dev, etc.) para pintar cada seccion del portafolio.
+| Operacion | Autenticacion |
+| --- | --- |
+| Lectura (`GET`) | Publica |
+| Escritura (`POST`, `PUT`, `PATCH`, `DELETE`) | Requiere `PORTFOLIO_API_KEY` |
 
-### `GET /api/certificados`
+### Endpoints principales
 
-Retorna certificados y logros para la seccion de validacion profesional.
+| Metodo | Ruta | Descripcion |
+| --- | --- | --- |
+| GET | `/api/proyectos` | Listar proyectos |
+| GET | `/api/proyectos/:id` | Obtener proyecto |
+| POST | `/api/proyectos` | Crear proyecto |
+| PUT/PATCH | `/api/proyectos/:id` | Actualizar proyecto |
+| DELETE | `/api/proyectos/:id` | Eliminar proyecto |
+| GET | `/api/certificados` | Listar certificados |
+| GET | `/api/certificados/:id` | Obtener certificado |
+| POST | `/api/certificados` | Crear certificado |
+| PUT/PATCH | `/api/certificados/:id` | Actualizar certificado |
+| DELETE | `/api/certificados/:id` | Eliminar certificado |
+
+Documentacion completa con ejemplos curl y guia para app movil: [`docs/api.md`](docs/api.md)
 
 ## Variables de entorno
 
@@ -130,6 +140,7 @@ Crea un archivo `.env.local` con valores equivalentes a:
 
 ```env
 MONGODB_URI=TU_URI_DE_MONGODB
+PORTFOLIO_API_KEY=clave_secreta_para_escritura
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
 PORT=3000
 ```
@@ -157,7 +168,7 @@ pnpm start
 ### Construir imagen
 
 ```bash
-docker build -t portafolio .
+docker build --build-arg MONGODB_URI=TU_URI -t portafolio .
 ```
 
 ### Ejecutar contenedor
@@ -174,43 +185,21 @@ NEXT_PUBLIC_API_URL=http://localhost:3000/api
 PORT=3000
 ```
 
-## CI/CD
+## Documentacion
 
-Voy a empezar a aplicar CI/CD en todos mis proyectos para validar cada cambio antes de publicarlo.
-
-### Que significa
-
-- CI: Integracion Continua. Automatiza validaciones como `lint` y `build` en cada push o pull request.
-- CD: Entrega o Despliegue Continuo. Automatiza la publicacion del proyecto cuando el flujo ya paso las validaciones.
-
-### Para que me sirve
-
-- Evitar subir codigo que no compile.
-- Detectar errores antes de llegar a produccion.
-- Reducir fallos manuales al revisar cambios.
-- Mantener una base tecnica mas ordenada y confiable.
-
-### Como lo estoy aplicando aqui
-
-- Workflow de GitHub Actions en `.github/workflows/ci.yml`.
-- Validacion automatica con `pnpm lint` y `pnpm build`.
-- Documentacion tecnica en `docs/ci-cd.md`.
-
-### Regla que voy a seguir desde ahora
-
-Todo proyecto nuevo o existente debe tener al menos:
-
-- una rama de trabajo,
-- una verificacion automatica en CI,
-- y un build exitoso antes de mergear.
+| Documento | Contenido |
+| --- | --- |
+| [`docs/arquitectura.md`](docs/arquitectura.md) | Flujos de datos, patrones, esquema MongoDB, capas |
+| [`docs/api.md`](docs/api.md) | API REST: endpoints, autenticacion, ejemplos para app movil |
+| [`docs/ci-cd.md`](docs/ci-cd.md) | Integracion continua con GitHub Actions |
 
 ## Roadmap
 
-- Agregar multiples proyectos por categoria con filtros.
+- App movil para administrar proyectos y certificados via API.
 - Publicar seccion de ciberseguridad con laboratorios y writeups.
 - Mejorar SEO tecnico (metadata extendida, Open Graph y schema).
-- Incorporar CI para calidad (`build`, `lint`, `type-check`).
 - Ampliar el flujo de CI/CD con despliegue automatizado en Vercel.
+- Endpoint de subida de imagenes a Firebase Storage.
 
 ---
 

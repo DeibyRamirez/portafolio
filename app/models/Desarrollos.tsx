@@ -1,4 +1,5 @@
 export interface DesarrolloInterface {
+    id?: string;
     tipo?: "movil" | "web" | "game_dev" | "ciberseguridad" | "automatizacion";
     titulo: string;
     descripcion: string;
