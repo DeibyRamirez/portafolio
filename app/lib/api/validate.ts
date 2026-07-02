@@ -112,9 +112,12 @@ export function validarProyectoInput(body: unknown): ResultadoValidacion<Proyect
 
 /**
  * Valida el body de PUT/PATCH para actualizar un proyecto.
- * Al menos un campo editable debe estar presente.
+ * Al menos un campo editable debe estar presente, salvo soloArchivos=true (solo multipart).
  */
-export function validarProyectoUpdateInput(body: unknown): ResultadoValidacion<ProyectoUpdateInput> {
+export function validarProyectoUpdateInput(
+  body: unknown,
+  opciones?: { soloArchivos?: boolean },
+): ResultadoValidacion<ProyectoUpdateInput> {
   if (!body || typeof body !== "object") {
     return { ok: false, message: "El cuerpo de la solicitud debe ser un objeto JSON" };
   }
@@ -131,7 +134,10 @@ export function validarProyectoUpdateInput(body: unknown): ResultadoValidacion<P
     "librerias",
   ] as const;
 
-  const tieneAlgunCampo = camposEditables.some((campo) => datos[campo] !== undefined);
+  const tieneAlgunCampo =
+    opciones?.soloArchivos === true ||
+    camposEditables.some((campo) => datos[campo] !== undefined);
+
   if (!tieneAlgunCampo) {
     return { ok: false, message: "Debes enviar al menos un campo para actualizar" };
   }
@@ -187,9 +193,12 @@ export function validarProyectoUpdateInput(body: unknown): ResultadoValidacion<P
 
 /**
  * Valida el body de POST para crear un certificado.
- * Requiere titulo e imagen no vacios.
+ * Requiere titulo. La imagen puede venir como archivo multipart (imagenOpcional=true).
  */
-export function validarCertificadoInput(body: unknown): ResultadoValidacion<CertificadoInput> {
+export function validarCertificadoInput(
+  body: unknown,
+  opciones?: { imagenOpcional?: boolean },
+): ResultadoValidacion<CertificadoInput> {
   if (!body || typeof body !== "object") {
     return { ok: false, message: "El cuerpo de la solicitud debe ser un objeto JSON" };
   }
@@ -200,8 +209,15 @@ export function validarCertificadoInput(body: unknown): ResultadoValidacion<Cert
     return { ok: false, message: "El campo 'titulo' es requerido y debe ser un string no vacio" };
   }
 
-  if (!esString(datos.imagen) || datos.imagen.trim() === "") {
-    return { ok: false, message: "El campo 'imagen' es requerido y debe ser un string no vacio" };
+  const imagenOpcional = opciones?.imagenOpcional === true;
+  const imagenRaw = datos.imagen;
+
+  if (!imagenOpcional) {
+    if (!esString(imagenRaw) || imagenRaw.trim() === "") {
+      return { ok: false, message: "El campo 'imagen' es requerido y debe ser un string no vacio" };
+    }
+  } else if (imagenRaw !== undefined && (!esString(imagenRaw) || imagenRaw.trim() === "")) {
+    return { ok: false, message: "Si envias 'imagen' en JSON, debe ser un string no vacio" };
   }
 
   if (datos.institucion !== undefined && !esString(datos.institucion)) {
@@ -216,7 +232,7 @@ export function validarCertificadoInput(body: unknown): ResultadoValidacion<Cert
     ok: true,
     data: {
       titulo: datos.titulo.trim(),
-      imagen: datos.imagen.trim(),
+      imagen: esString(imagenRaw) ? imagenRaw.trim() : "",
       institucion: datos.institucion as string | undefined,
       fecha: datos.fecha as string | undefined,
     },
@@ -225,8 +241,12 @@ export function validarCertificadoInput(body: unknown): ResultadoValidacion<Cert
 
 /**
  * Valida el body de PUT/PATCH para actualizar un certificado.
+ * Con soloArchivo=true permite actualizar enviando unicamente un archivo multipart.
  */
-export function validarCertificadoUpdateInput(body: unknown): ResultadoValidacion<CertificadoUpdateInput> {
+export function validarCertificadoUpdateInput(
+  body: unknown,
+  opciones?: { soloArchivo?: boolean },
+): ResultadoValidacion<CertificadoUpdateInput> {
   if (!body || typeof body !== "object") {
     return { ok: false, message: "El cuerpo de la solicitud debe ser un objeto JSON" };
   }
@@ -234,7 +254,10 @@ export function validarCertificadoUpdateInput(body: unknown): ResultadoValidacio
   const datos = body as Record<string, unknown>;
   const camposEditables = ["titulo", "imagen", "institucion", "fecha"] as const;
 
-  const tieneAlgunCampo = camposEditables.some((campo) => datos[campo] !== undefined);
+  const tieneAlgunCampo =
+    opciones?.soloArchivo === true ||
+    camposEditables.some((campo) => datos[campo] !== undefined);
+
   if (!tieneAlgunCampo) {
     return { ok: false, message: "Debes enviar al menos un campo para actualizar" };
   }

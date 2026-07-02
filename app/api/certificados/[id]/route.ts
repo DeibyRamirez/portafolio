@@ -1,12 +1,16 @@
 import { verificarApiKey, respuestaNoAutorizado } from "@/app/lib/api/auth";
+import {
+  esMultipartRequest,
+  parseJsonBody,
+  parseMultipartCertificado,
+} from "@/app/lib/api/multipart";
 import { revalidarPortafolio } from "@/app/lib/api/revalidate";
 import { respuestaError, respuestaExito, respuestaNoEncontrado } from "@/app/lib/api/responses";
 import { validarCertificadoUpdateInput } from "@/app/lib/api/validate";
-import {
-  deleteCertificado,
-  getCertificadoById,
-  updateCertificado,
-} from "@/app/lib/data/certificados";
+import { deleteCertificado, getCertificadoById } from "@/app/lib/data/certificados";
+import { actualizarCertificadoConImagen } from "@/app/lib/services/recursos-con-imagenes";
+
+export const runtime = "nodejs";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -31,12 +35,31 @@ export async function PUT(request: Request, { params }: RouteParams) {
 
   try {
     const { id } = await params;
-    const body = await request.json();
-    const validacion = validarCertificadoUpdateInput(body);
+    let body: unknown;
+    let archivoImagen: File | null = null;
+    let reemplazarImagen = false;
+
+    if (esMultipartRequest(request)) {
+      const multipart = await parseMultipartCertificado(request);
+      body = multipart.body;
+      archivoImagen = multipart.archivoImagen;
+      reemplazarImagen = multipart.reemplazarImagen;
+    } else {
+      body = await parseJsonBody(request);
+    }
+
+    const validacion = validarCertificadoUpdateInput(body, {
+      soloArchivo: !!archivoImagen,
+    });
 
     if (!validacion.ok) return respuestaError(validacion.message, 400);
 
-    const certificado = await updateCertificado(id, validacion.data);
+    const certificado = await actualizarCertificadoConImagen(
+      id,
+      validacion.data,
+      archivoImagen,
+      reemplazarImagen,
+    );
 
     if (!certificado) return respuestaNoEncontrado("Certificado");
 
@@ -44,11 +67,12 @@ export async function PUT(request: Request, { params }: RouteParams) {
     return respuestaExito(certificado);
   } catch (error) {
     console.error("Error al actualizar el certificado:", error);
-    return respuestaError("Error al actualizar el certificado", 500);
+    const mensaje = error instanceof Error ? error.message : "Error al actualizar el certificado";
+    return respuestaError(mensaje, 500);
   }
 }
 
-/** PATCH /api/certificados/:id — Alias de PUT para actualizacion parcial (requiere API key). */
+/** PATCH /api/certificados/:id — Alias de PUT (requiere API key). */
 export async function PATCH(request: Request, context: RouteParams) {
   return PUT(request, context);
 }

@@ -1,12 +1,16 @@
 import { verificarApiKey, respuestaNoAutorizado } from "@/app/lib/api/auth";
+import {
+  esMultipartRequest,
+  parseJsonBody,
+  parseMultipartProyecto,
+} from "@/app/lib/api/multipart";
 import { revalidarPortafolio } from "@/app/lib/api/revalidate";
 import { respuestaError, respuestaExito, respuestaNoEncontrado } from "@/app/lib/api/responses";
 import { validarProyectoUpdateInput } from "@/app/lib/api/validate";
-import {
-  deleteProyecto,
-  getProyectoById,
-  updateProyecto,
-} from "@/app/lib/data/proyectos";
+import { deleteProyecto, getProyectoById } from "@/app/lib/data/proyectos";
+import { actualizarProyectoConImagenes } from "@/app/lib/services/recursos-con-imagenes";
+
+export const runtime = "nodejs";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -25,18 +29,41 @@ export async function GET(_request: Request, { params }: RouteParams) {
   }
 }
 
-/** PUT /api/proyectos/:id — Actualiza un proyecto (requiere API key). */
+/**
+ * PUT /api/proyectos/:id — Actualiza un proyecto (requiere API key).
+ * Acepta JSON o multipart con archivos `imagenes`.
+ * Flag `reemplazarImagenes=true` sobrescribe las imagenes existentes.
+ */
 export async function PUT(request: Request, { params }: RouteParams) {
   if (!verificarApiKey(request)) return respuestaNoAutorizado();
 
   try {
     const { id } = await params;
-    const body = await request.json();
-    const validacion = validarProyectoUpdateInput(body);
+    let body: unknown;
+    let archivosImagen: File[] = [];
+    let reemplazarImagenes = false;
+
+    if (esMultipartRequest(request)) {
+      const multipart = await parseMultipartProyecto(request);
+      body = multipart.body;
+      archivosImagen = multipart.archivosImagen;
+      reemplazarImagenes = multipart.reemplazarImagenes;
+    } else {
+      body = await parseJsonBody(request);
+    }
+
+    const validacion = validarProyectoUpdateInput(body, {
+      soloArchivos: archivosImagen.length > 0,
+    });
 
     if (!validacion.ok) return respuestaError(validacion.message, 400);
 
-    const proyecto = await updateProyecto(id, validacion.data);
+    const proyecto = await actualizarProyectoConImagenes(
+      id,
+      validacion.data,
+      archivosImagen,
+      reemplazarImagenes,
+    );
 
     if (!proyecto) return respuestaNoEncontrado("Proyecto");
 
@@ -44,7 +71,8 @@ export async function PUT(request: Request, { params }: RouteParams) {
     return respuestaExito(proyecto);
   } catch (error) {
     console.error("Error al actualizar el proyecto:", error);
-    return respuestaError("Error al actualizar el proyecto", 500);
+    const mensaje = error instanceof Error ? error.message : "Error al actualizar el proyecto";
+    return respuestaError(mensaje, 500);
   }
 }
 

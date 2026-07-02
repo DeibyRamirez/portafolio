@@ -61,7 +61,7 @@ Este repositorio implementa un portafolio web con estas caracteristicas clave:
 - `app/lib/api.ts`: cliente HTTP interno (`safeFetchJson`).
 - `app/components/Conversion.tsx`: conversion de rutas `gs://` a URL publica de Firebase.
 
-Documentacion completa: [`docs/arquitectura.md`](docs/arquitectura.md)
+Documentacion completa: [`docs/arquitectura.md`](docs/arquitectura.md) · Guia Flutter: [`docs/flutter-guia.md`](docs/flutter-guia.md)
 
 ## Estructura de carpetas
 
@@ -187,10 +187,17 @@ PORT=3000
 
 ## Documentacion
 
+Indice completo: [`docs/README.md`](docs/README.md)
+
 | Documento | Contenido |
 | --- | --- |
+| [`docs/README.md`](docs/README.md) | Indice y mapa de toda la documentacion |
 | [`docs/arquitectura.md`](docs/arquitectura.md) | Flujos de datos, patrones, esquema MongoDB, capas |
-| [`docs/api.md`](docs/api.md) | API REST: endpoints, autenticacion, ejemplos para app movil |
+| [`docs/modelos.md`](docs/modelos.md) | Esquemas MongoDB, interfaces TypeScript, validacion |
+| [`docs/logica.md`](docs/logica.md) | Capa de datos, CRUD, auth, manejo de errores |
+| [`docs/flujos.md`](docs/flujos.md) | Diagramas: web, API, app movil, imagenes |
+| [`docs/api.md`](docs/api.md) | API REST: endpoints, autenticacion, ejemplos curl |
+| [`docs/flutter-guia.md`](docs/flutter-guia.md) | **Guia Flutter:** modelos Dart, servicio, Firebase |
 | [`docs/ci-cd.md`](docs/ci-cd.md) | Integracion continua con GitHub Actions |
 
 ## Roadmap
@@ -199,7 +206,6 @@ PORT=3000
 - Publicar seccion de ciberseguridad con laboratorios y writeups.
 - Mejorar SEO tecnico (metadata extendida, Open Graph y schema).
 - Ampliar el flujo de CI/CD con despliegue automatizado en Vercel.
-- Endpoint de subida de imagenes a Firebase Storage.
 
 ---
 

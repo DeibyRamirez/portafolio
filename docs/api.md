@@ -2,6 +2,8 @@
 
 Documentacion de los endpoints HTTP expuestos por Next.js Route Handlers en `app/api/*`.
 
+> **Integracion Flutter:** guia completa con modelos Dart, servicio HTTP y ejemplos en [`flutter-guia.md`](./flutter-guia.md).
+
 Esta API permite **leer** proyectos y certificados de forma publica, y **crear, actualizar y eliminar** contenido de forma autenticada — ideal para una app movil de administracion o integraciones externas.
 
 ## Base URL
@@ -257,15 +259,105 @@ Authorization: Bearer TU_API_KEY
 
 ## Imagenes (Firebase Storage)
 
-La API **no sube archivos** directamente. Las imagenes se gestionan en Firebase Storage y la API guarda las rutas `gs://` en MongoDB.
+La API **sube imagenes directamente a Firebase Storage** cuando envias `multipart/form-data`. Tambien acepta rutas `gs://` en JSON (modo legacy).
 
-### Flujo recomendado para la app movil
+### Estructura de carpetas en Storage
 
-1. Subir la imagen a Firebase Storage desde la app (SDK de Firebase).
-2. Obtener la ruta `gs://bucket/path/archivo.png`.
-3. Enviar esa ruta en el campo `imagen` o `imagenes[]` al crear/actualizar via API.
+```text
+proyectos/
+  {tipo}/                          # movil, web, game_dev, automatizacion, ciberseguridad
+    {titulo del proyecto}/         # nombre exacto del titulo
+      {titulo}_1.png
+      {titulo}_2.png
+      ...
+
+certificados/
+  {titulo del certificado}/
+    {titulo}_1.png
+```
+
+**Ejemplo real:**
+
+```text
+gs://portafoliodeibyramirez.firebasestorage.app/proyectos/automatizacion/Automatizacion PQR Correos Electronicos/Automatizacion PQR Correos Electronicos_1.png
+```
+
+### Flujo al crear un proyecto (multipart)
+
+1. La API guarda metadata en MongoDB.
+2. Crea archivos en Storage con la ruta `proyectos/{tipo}/{titulo}/{titulo}_n.ext`.
+3. Actualiza MongoDB con las rutas `gs://` generadas.
+
+Si falla la subida a Storage, **revierte** el documento en MongoDB.
+
+### POST /api/proyectos con archivos
+
+```http
+POST /api/proyectos
+Content-Type: multipart/form-data
+Authorization: Bearer TU_API_KEY
+```
+
+| Campo | Tipo | Requerido | Descripcion |
+| --- | --- | --- | --- |
+| `data` | string (JSON) | Si | Metadata del proyecto |
+| `imagenes` | file(s) | No | Una o varias imagenes PNG/JPG/WEBP/GIF |
+
+El campo `tipo` en `data` es **obligatorio** si envias archivos `imagenes`.
+
+**Ejemplo curl:**
+
+```bash
+curl -X POST https://TU-DOMINIO.vercel.app/api/proyectos \
+  -H "Authorization: Bearer TU_API_KEY" \
+  -F 'data={"titulo":"Automatizacion PQR Correos Electronicos","descripcion":"Flujo n8n para PQR","tipo":"automatizacion","lenguajes":["JavaScript"],"frameworks":["n8n"]}' \
+  -F "imagenes=@captura1.png" \
+  -F "imagenes=@captura2.png"
+```
+
+**Respuesta:** proyecto con `imagenes[]` ya poblado con rutas `gs://`.
+
+### PATCH /api/proyectos/:id con archivos
+
+| Campo extra | Descripcion |
+| --- | --- |
+| `imagenes` | Nuevas imagenes a agregar al final |
+| `reemplazarImagenes` | `"true"` para borrar las anteriores y renumerar desde `_1` |
+
+### POST /api/certificados con archivo
+
+```bash
+curl -X POST https://TU-DOMINIO.vercel.app/api/certificados \
+  -H "Authorization: Bearer TU_API_KEY" \
+  -F 'data={"titulo":"AWS Cloud Practitioner","institucion":"AWS","fecha":"2025"}' \
+  -F "imagen=@certificado.png"
+```
+
+Ruta generada: `certificados/{titulo}/{titulo}_1.png`
+
+### Modo JSON (sin subir archivos)
+
+Sigue funcionando enviando rutas `gs://` manualmente en `imagenes[]` o `imagen`.
+
+### Configuracion Firebase en el servidor
+
+Variables en Vercel / `.env.local`:
+
+```env
+# Opcion A (recomendada)
+FIREBASE_SERVICE_ACCOUNT_JSON={"type":"service_account",...}
+
+# Opcion B
+FIREBASE_PROJECT_ID=tu-proyecto
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-...@tu-proyecto.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
+
+Obtén el JSON en Firebase Console → Project Settings → Service Accounts → Generate new private key.
 
 El sitio web convierte automaticamente `gs://` a URL publica HTTPS en runtime.
+
+Ver guia Flutter con multipart: [`flutter-guia.md`](./flutter-guia.md).
 
 ---
 
@@ -342,4 +434,8 @@ async function crearProyecto(datos: object) {
 | `app/lib/data/certificados.ts` | Operaciones MongoDB de certificados |
 | `app/lib/api/auth.ts` | Verificacion de API key |
 | `app/lib/api/validate.ts` | Validacion de bodies JSON |
+| `app/lib/api/multipart.ts` | Parseo multipart/form-data |
+| `app/lib/firebase/storage.ts` | Subida a Firebase Storage |
+| `app/lib/firebase/storage-paths.ts` | Rutas y nombres de archivos |
+| `app/lib/services/recursos-con-imagenes.ts` | Orquestacion MongoDB + Storage |
 | `app/lib/api/responses.ts` | Respuestas HTTP estandarizadas |

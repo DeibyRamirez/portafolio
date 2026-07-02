@@ -2,6 +2,8 @@
 
 Este documento explica como esta organizado el portafolio, como fluyen los datos desde MongoDB hasta la interfaz y que patrones se aplican en el codigo.
 
+> **Indice completo de documentacion:** [`docs/README.md`](./README.md)
+
 ## Vision general
 
 El portafolio es un **monolito Next.js 15** con App Router. Toda la aplicacion vive en un solo repositorio:
@@ -329,3 +331,14 @@ El workflow ejecuta `pnpm lint` y `pnpm build`. Si MongoDB no esta configurado e
 ## En resumen
 
 El portafolio combina una **arquitectura modular por secciones** con una **capa de datos centralizada** y una **API REST CRUD** lista para consumo desde app movil. Los proyectos y certificados viven en MongoDB, las herramientas van embebidas en cada proyecto, y la pagina principal hace un unico fetch para alimentar todas las categorias con soporte multi-proyecto.
+
+## Documentos relacionados
+
+| Documento | Contenido |
+| --- | --- |
+| [Indice docs](./README.md) | Mapa completo de documentacion |
+| [Modelos](./modelos.md) | Campos, tipos y reglas de validacion |
+| [Logica](./logica.md) | CRUD, auth, capa de datos |
+| [Flujos](./flujos.md) | Diagramas de secuencia |
+| [API REST](./api.md) | Contrato HTTP |
+| [Guia Flutter](./flutter-guia.md) | Integracion app movil |
