@@ -1,4 +1,4 @@
-import { firebaseEstaConfigurado } from "@/app/lib/firebase/admin";
+import { firebaseEstaConfigurado, mensajeConfiguracionFirebase } from "@/app/lib/firebase/admin";
 import {
   eliminarImagenesStorage,
   subirImagenCertificado,
@@ -34,7 +34,7 @@ export async function crearProyectoConImagenes(
   }
 
   if (archivos.length > 0 && !firebaseEstaConfigurado()) {
-    throw new Error("Firebase Storage no esta configurado en el servidor");
+    throw new Error(mensajeConfiguracionFirebase());
   }
 
   const proyecto = await createProyecto({ ...input, imagenes: input.imagenes ?? [] });
@@ -76,7 +76,7 @@ export async function actualizarProyectoConImagenes(
   }
 
   if (archivos.length > 0 && !firebaseEstaConfigurado()) {
-    throw new Error("Firebase Storage no esta configurado en el servidor");
+    throw new Error(mensajeConfiguracionFirebase());
   }
 
   let imagenesFinales = input.imagenes ?? existente.imagenes;
@@ -104,7 +104,7 @@ export async function crearCertificadoConImagen(
   const tieneGsEnBody = !!input.imagen?.startsWith("gs://");
 
   if (tieneArchivo && !firebaseEstaConfigurado()) {
-    throw new Error("Firebase Storage no esta configurado en el servidor");
+    throw new Error(mensajeConfiguracionFirebase());
   }
 
   if (!tieneArchivo && !tieneGsEnBody) {
@@ -143,7 +143,7 @@ export async function actualizarCertificadoConImagen(
   const titulo = input.titulo ?? existente.titulo;
 
   if (archivo && !firebaseEstaConfigurado()) {
-    throw new Error("Firebase Storage no esta configurado en el servidor");
+    throw new Error(mensajeConfiguracionFirebase());
   }
 
   let imagenFinal = input.imagen ?? existente.imagen;
