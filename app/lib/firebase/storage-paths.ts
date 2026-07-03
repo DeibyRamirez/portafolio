@@ -45,37 +45,3 @@ export function construirRutaImagenCertificado(
 export function construirGsUrl(rutaStorage: string): string {
   return `gs://${FIREBASE_BUCKET}/${rutaStorage}`;
 }
-
-/** Extension permitida a partir del archivo subido. Default: png. */
-export function obtenerExtensionArchivo(archivo: File): string {
-  const desdeNombre = archivo.name.split(".").pop()?.toLowerCase();
-
-  if (desdeNombre && ["png", "jpg", "jpeg", "webp", "gif"].includes(desdeNombre)) {
-    return desdeNombre === "jpeg" ? "jpg" : desdeNombre;
-  }
-
-  const desdeMime: Record<string, string> = {
-    "image/png": "png",
-    "image/jpeg": "jpg",
-    "image/webp": "webp",
-    "image/gif": "gif",
-  };
-
-  return desdeMime[archivo.type] ?? "png";
-}
-
-/** Tipos MIME aceptados en uploads. */
-export const MIME_IMAGENES_PERMITIDOS = [
-  "image/png",
-  "image/jpeg",
-  "image/webp",
-  "image/gif",
-] as const;
-
-export function esImagenPermitida(archivo: File): boolean {
-  if (!archivo.type) {
-    const ext = archivo.name.split(".").pop()?.toLowerCase();
-    return !!ext && ["png", "jpg", "jpeg", "webp", "gif"].includes(ext);
-  }
-  return (MIME_IMAGENES_PERMITIDOS as readonly string[]).includes(archivo.type);
-}

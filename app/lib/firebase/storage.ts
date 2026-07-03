@@ -2,38 +2,28 @@ import {
   construirGsUrl,
   construirRutaImagenCertificado,
   construirRutaImagenProyecto,
-  esImagenPermitida,
-  obtenerExtensionArchivo,
 } from "@/app/lib/firebase/storage-paths";
+import { validarArchivoImagen } from "@/app/lib/firebase/validar-imagen";
 import { getFirebaseBucket } from "@/app/lib/firebase/admin";
 
-async function subirArchivoStorage(rutaStorage: string, archivo: File): Promise<string> {
+async function subirBufferStorage(
+  rutaStorage: string,
+  buffer: Buffer,
+  contentType: string,
+): Promise<string> {
   const bucket = getFirebaseBucket();
-  const buffer = Buffer.from(await archivo.arrayBuffer());
 
   await bucket.file(rutaStorage).save(buffer, {
-    metadata: { contentType: archivo.type || "image/png" },
+    metadata: { contentType },
     resumable: false,
   });
 
   return construirGsUrl(rutaStorage);
 }
 
-function validarArchivosImagen(archivos: File[]): void {
-  for (const archivo of archivos) {
-    if (!esImagenPermitida(archivo)) {
-      throw new Error(
-        `Tipo de archivo no permitido: ${archivo.name}. Usa PNG, JPG, WEBP o GIF.`,
-      );
-    }
-  }
-}
-
 /**
  * Sube imagenes de un proyecto a Firebase Storage.
  * Ruta: proyectos/{tipo}/{titulo}/{titulo}_n.ext
- *
- * @param indiceInicial Numero de la primera imagen (default 1). Util para append en updates.
  */
 export async function subirImagenesProyecto(
   tipo: string,
@@ -41,15 +31,13 @@ export async function subirImagenesProyecto(
   archivos: File[],
   indiceInicial = 1,
 ): Promise<string[]> {
-  validarArchivosImagen(archivos);
-
   const gsUrls: string[] = [];
 
   for (let i = 0; i < archivos.length; i++) {
+    const { formato, buffer, contentType } = await validarArchivoImagen(archivos[i]);
     const indice = indiceInicial + i;
-    const extension = obtenerExtensionArchivo(archivos[i]);
-    const ruta = construirRutaImagenProyecto(tipo, titulo, indice, extension);
-    const gsUrl = await subirArchivoStorage(ruta, archivos[i]);
+    const ruta = construirRutaImagenProyecto(tipo, titulo, indice, formato);
+    const gsUrl = await subirBufferStorage(ruta, buffer, contentType);
     gsUrls.push(gsUrl);
   }
 
@@ -61,11 +49,9 @@ export async function subirImagenesProyecto(
  * Ruta: certificados/{titulo}/{titulo}_1.ext
  */
 export async function subirImagenCertificado(titulo: string, archivo: File): Promise<string> {
-  validarArchivosImagen([archivo]);
-
-  const extension = obtenerExtensionArchivo(archivo);
-  const ruta = construirRutaImagenCertificado(titulo, 1, extension);
-  return subirArchivoStorage(ruta, archivo);
+  const { formato, buffer, contentType } = await validarArchivoImagen(archivo);
+  const ruta = construirRutaImagenCertificado(titulo, 1, formato);
+  return subirBufferStorage(ruta, buffer, contentType);
 }
 
 /** Elimina archivos de Storage a partir de sus rutas gs://. */
