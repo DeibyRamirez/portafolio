@@ -243,18 +243,30 @@ export default function Proyectos({
   }
 
   /* ================= RENDER: WEB ================= */
-  const imagenWeb = imagenes?.[0] ?? "";
+  const imagenActual = imagenes ? imagenes[indice] : "";
   return (
     <div className="h-full flex flex-col md:flex-row transform transition-transform duration-500 hover:scale-105">
       <div className="relative w-full md:w-1/2 h-48 md:h-56 lg:h-64 overflow-hidden flex-shrink-0 group">
         <Image
-          src={imagenWeb}
-          alt={titulo || "Imagen de Proyecto Web"}
+          src={imagenActual}
+          alt={`Imagen ${indice + 1}`}
           fill
-          className="object-cover transition-transform duration-500"
-          priority
+          className="object-cover transition-all duration-500"
+          priority={indice === 0}
         />
-        <BotonExpandir src={imagenWeb} />
+        <BotonExpandir src={imagenActual} />
+        {imagenes && imagenes.length > 1 && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-20">
+            {imagenes.map((_, i) => (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === indice ? "bg-yellow-500 w-4" : "bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none z-10" />
       </div>
 

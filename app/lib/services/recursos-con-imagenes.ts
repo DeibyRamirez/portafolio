@@ -79,17 +79,19 @@ export async function actualizarProyectoConImagenes(
     throw new Error(mensajeConfiguracionFirebase());
   }
 
-  let imagenesFinales = input.imagenes ?? existente.imagenes;
+  let imagenesBase = input.imagenes ?? existente.imagenes;
+  let imagenesFinales = imagenesBase;
 
   if (archivos.length > 0) {
     if (reemplazarImagenes && existente.imagenes.length > 0) {
       await eliminarImagenesStorage(existente.imagenes);
+      imagenesBase = [];
     }
 
-    const indiceInicial = reemplazarImagenes ? 1 : existente.imagenes.length + 1;
+    const indiceInicial = reemplazarImagenes ? 1 : imagenesBase.length + 1;
     const nuevasUrls = await subirImagenesProyecto(tipo!, titulo, archivos, indiceInicial);
 
-    imagenesFinales = reemplazarImagenes ? nuevasUrls : [...existente.imagenes, ...nuevasUrls];
+    imagenesFinales = reemplazarImagenes ? nuevasUrls : [...imagenesBase, ...nuevasUrls];
   }
 
   return updateProyecto(id, { ...input, imagenes: imagenesFinales });
