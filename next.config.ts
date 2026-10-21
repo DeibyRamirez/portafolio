@@ -13,3 +13,11 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// Bindings locales solo durante `next dev`. El build de producción no debe
+// levantar el proxy de Wrangler.
+if (process.env.NODE_ENV === "development") {
+  void import("@opennextjs/cloudflare").then(({ initOpenNextCloudflareForDev }) =>
+    initOpenNextCloudflareForDev(),
+  );
+}
