@@ -14,6 +14,7 @@ export default function Dialog({
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
 
   useEffect(() => {
@@ -21,6 +22,19 @@ export default function Dialog({
     if (!node) return;
     if (open && !node.open) node.showModal();
     if (!open && node.open) node.close();
+  }, [open]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (open) root.classList.add("modal-open");
+    else root.classList.remove("modal-open");
+    return () => root.classList.remove("modal-open");
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const id = requestAnimationFrame(() => panelRef.current?.focus());
+    return () => cancelAnimationFrame(id);
   }, [open]);
 
   return (
@@ -32,7 +46,9 @@ export default function Dialog({
     >
       <div className="flex h-full w-full items-center justify-center" onClick={onClose}>
         <div
-          className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-3xl border border-graphite bg-coal p-5 md:p-8"
+          ref={panelRef}
+          tabIndex={-1}
+          className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-3xl border border-graphite bg-coal p-5 md:p-8 outline-none"
           onClick={(event) => event.stopPropagation()}
         >
           <div className="mb-5 flex items-start justify-between gap-4">

@@ -15,12 +15,16 @@ export default function Cursor() {
     const xTo = gsap.quickTo(node, "x", { duration: 0.35, ease: "power3.out" });
     const yTo = gsap.quickTo(node, "y", { duration: 0.35, ease: "power3.out" });
 
+    const modalAbierto = () => document.documentElement.classList.contains("modal-open");
+
     const onMove = (event: PointerEvent) => {
+      if (modalAbierto()) return;
       xTo(event.clientX);
       yTo(event.clientY);
       gsap.to(node, { opacity: 1, duration: 0.2 });
     };
     const onOver = (event: Event) => {
+      if (modalAbierto()) return;
       const target = event.target;
       if (!(target instanceof Element)) return;
       const hot = Boolean(target.closest("a, button"));
@@ -46,7 +50,7 @@ export default function Cursor() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[70] h-3 w-3 rounded-full bg-light opacity-0 mix-blend-difference"
+      className="site-cursor pointer-events-none fixed left-0 top-0 z-[70] h-3 w-3 rounded-full bg-light opacity-0 mix-blend-difference"
     />
   );
 }

@@ -143,7 +143,10 @@ MONGODB_URI=TU_URI_DE_MONGODB
 PORTFOLIO_API_KEY=clave_secreta_para_escritura
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
 PORT=3000
+SKIP_OPENNEXT_DEV=1
 ```
+
+`SKIP_OPENNEXT_DEV=1` evita que `next dev` levante el proxy de Wrangler (`initOpenNextCloudflareForDev`). El portafolio no usa `getCloudflareContext` en runtime; deja la variable sin definir solo si necesitas bindings de Cloudflare en local. Para probar el worker compilado usa `pnpm preview` tras `pnpm build`.
 
 > Nota: evita subir archivos `.env*` al repositorio.
 
@@ -156,10 +159,27 @@ pnpm dev
 
 Abrir en navegador: `http://localhost:3000`
 
-Build de produccion:
+### Desarrollo vs produccion (tiempos de arranque)
+
+| Modo | Comando | Que esperar |
+| --- | --- | --- |
+| Desarrollo | `pnpm dev` | Compilacion bajo demanda + HMR; la primera visita a `/` suele tardar varios segundos. `Ready` en consola suele estar ~10–15 s (menor con `SKIP_OPENNEXT_DEV=1`). |
+| Produccion Node | `pnpm exec next build` y `pnpm start` | Build inicial ~1–2 min; el servidor suele estar listo en ~2 s; TTFB de `/` baja tras la primera peticion si la pagina esta en cache (ISR 60 s). |
+| Cloudflare Workers | `pnpm build` y `pnpm preview` | Flujo de despliegue OpenNext; no es el loop diario de UI. |
+
+La home usa ISR (`revalidate = 60` en `app/page.tsx`); las APIs llaman `revalidarPortafolio()` al crear o editar datos.
+
+Build de produccion (Cloudflare / OpenNext):
 
 ```bash
 pnpm build
+pnpm preview
+```
+
+Build local estilo Node (sin adapter Workers):
+
+```bash
+pnpm exec next build
 pnpm start
 ```
 
