@@ -12,6 +12,9 @@ const compat = new FlatCompat({
 });
 
 const config = [
+  {
+    ignores: [".next/**", ".open-next/**", ".wrangler/**", "node_modules/**", "out/**", "next-env.d.ts"],
+  },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
 ];
 

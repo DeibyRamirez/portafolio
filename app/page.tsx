@@ -1,13 +1,12 @@
-import Inicio from "./pages/Inicio";
-import Arquitectura from "./pages/Arquitectura";
-import DesarrolloMovil from "./pages/DesarrolloMovil";
-import DesarrolloWeb from "./pages/DesarrolloWeb";
-import Logros from "./pages/Logros";
-import GameDev from "./pages/GameDev";
-import Ciberseguridad from "./pages/Ciberseguridad";
-import Automatizaciones from "./pages/Automatizaciones";
+import About from "./components/site/About";
+import Certificates from "./components/site/Certificates";
+import Contact from "./components/site/Contact";
+import Experience from "./components/site/Experience";
+import Hero from "./components/site/Hero";
+import Projects from "./components/site/Projects";
+import Skills from "./components/site/Skills";
 import { getCertificados } from "@/app/lib/data/certificados";
-import { filtrarProyectosPorTipo, getProyectos } from "@/app/lib/data/proyectos";
+import { getProyectos } from "@/app/lib/data/proyectos";
 
 export const dynamic = "force-dynamic";
 
@@ -16,14 +15,13 @@ export default async function HomePage() {
 
   return (
     <>
-      <Inicio />
-      <Arquitectura />
-      <DesarrolloMovil proyectos={filtrarProyectosPorTipo(proyectos, "movil")} />
-      <DesarrolloWeb proyectos={filtrarProyectosPorTipo(proyectos, "web")} />
-      <Automatizaciones proyectos={filtrarProyectosPorTipo(proyectos, "automatizacion")} />
-      <GameDev proyectos={filtrarProyectosPorTipo(proyectos, "game_dev")} />
-      <Ciberseguridad proyectos={filtrarProyectosPorTipo(proyectos, "ciberseguridad")} />
-      <Logros certificados={certificados} />
+      <Hero proyectos={proyectos} />
+      <About />
+      <Projects proyectos={proyectos} />
+      <Skills proyectos={proyectos} />
+      <Experience />
+      <Certificates certificados={certificados} />
+      <Contact />
     </>
   );
 }

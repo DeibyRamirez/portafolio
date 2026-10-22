@@ -1,0 +1,55 @@
+"use client";
+
+import { useEffect, useId, useRef, type ReactNode } from "react";
+
+export default function Dialog({
+  open,
+  title,
+  onClose,
+  children,
+}: {
+  open: boolean;
+  title: string;
+  onClose: () => void;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (open && !node.open) node.showModal();
+    if (!open && node.open) node.close();
+  }, [open]);
+
+  return (
+    <dialog
+      ref={ref}
+      className="sheet"
+      aria-labelledby={titleId}
+      onClose={onClose}
+    >
+      <div className="flex h-full w-full items-center justify-center" onClick={onClose}>
+        <div
+          className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-3xl border border-graphite bg-coal p-5 md:p-8"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="mb-5 flex items-start justify-between gap-4">
+            <h2 id={titleId} className="text-2xl font-semibold leading-tight md:text-3xl">
+              {title}
+            </h2>
+            <button
+              type="button"
+              onClick={onClose}
+              className="min-h-11 shrink-0 rounded-full border border-white/55 px-4 py-2 text-sm font-semibold"
+            >
+              Cerrar
+            </button>
+          </div>
+          {children}
+        </div>
+      </div>
+    </dialog>
+  );
+}
