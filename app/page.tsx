@@ -8,7 +8,8 @@ import Skills from "./components/site/Skills";
 import { getCertificados } from "@/app/lib/data/certificados";
 import { getProyectos } from "@/app/lib/data/proyectos";
 
-export const dynamic = "force-dynamic";
+/** Regenera la home en segundo plano; las mutaciones API llaman revalidarPortafolio(). */
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [proyectos, certificados] = await Promise.all([getProyectos(), getCertificados()]);

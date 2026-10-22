@@ -201,4 +201,24 @@ dialog.sheet::backdrop {
   html.has-cursor * {
     cursor: none;
   }
+
+  html.has-cursor dialog.sheet,
+  html.has-cursor dialog.sheet * {
+    cursor: auto;
+  }
+
+  html.has-cursor.modal-open .site-cursor {
+    opacity: 0 !important;
+    visibility: hidden;
+  }
+
+  html.modal-open,
+  html.modal-open * {
+    cursor: auto;
+  }
+
+  html.modal-open button,
+  html.modal-open [role="button"] {
+    cursor: pointer;
+  }
 }

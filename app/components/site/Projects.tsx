@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { DesarrolloInterface } from "@/app/models/Desarrollos";
@@ -21,6 +21,8 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
   const firma = ordenados.map((proyecto) => proyecto.id ?? proyecto.titulo).join("|");
   const [horizontal, setHorizontal] = useState(false);
   const [galeria, setGaleria] = useState<{ proyecto: DesarrolloInterface; index: number } | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const galeriaHintId = useId();
 
   useLayoutEffect(() => {
     const media = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
@@ -99,6 +101,78 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
   );
 
   const imagenesGaleria = galeria ? (galeria.proyecto.imagenes ?? []).map((src) => imagenPublica(src)).filter((src): src is string => Boolean(src)) : [];
+
+  useEffect(() => {
+    const lenis = getLenis();
+    if (!lenis || !galeria) return;
+    lenis.stop();
+    return () => lenis.start();
+  }, [galeria]);
+
+  const irAnterior = useCallback(() => {
+    setGaleria((prev) => (prev && prev.index > 0 ? { ...prev, index: prev.index - 1 } : prev));
+  }, []);
+
+  const irSiguiente = useCallback(() => {
+    setGaleria((prev) => {
+      if (!prev) return prev;
+      const total = (prev.proyecto.imagenes ?? [])
+        .map((src) => imagenPublica(src))
+        .filter((src): src is string => Boolean(src)).length;
+      if (prev.index >= total - 1) return prev;
+      return { ...prev, index: prev.index + 1 };
+    });
+  }, []);
+
+  const navBtnClass =
+    "inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/55 bg-carbon/85 px-4 text-sm font-semibold backdrop-blur-sm transition hover:bg-carbon disabled:opacity-40 disabled:hover:bg-carbon/85";
+
+  useEffect(() => {
+    if (!galeria || imagenesGaleria.length <= 1) return;
+    const node = carouselRef.current;
+    if (!node) return;
+    const target = galeria.index * node.clientWidth;
+    if (Math.abs(node.scrollLeft - target) > 2) {
+      node.scrollTo({ left: target, behavior: "smooth" });
+    }
+  }, [galeria?.index, galeria?.proyecto.id, imagenesGaleria.length]);
+
+  useEffect(() => {
+    if (!galeria || imagenesGaleria.length <= 1) return;
+    const node = carouselRef.current;
+    if (!node) return;
+
+    const syncIndexFromScroll = () => {
+      const width = node.clientWidth;
+      if (width <= 0) return;
+      const next = Math.min(imagenesGaleria.length - 1, Math.max(0, Math.round(node.scrollLeft / width)));
+      setGaleria((prev) => (prev && prev.index !== next ? { ...prev, index: next } : prev));
+    };
+
+    let scrollTimer: ReturnType<typeof setTimeout> | undefined;
+    const onScroll = () => {
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(syncIndexFromScroll, 80);
+    };
+
+    node.addEventListener("scrollend", syncIndexFromScroll);
+    node.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      if (scrollTimer) clearTimeout(scrollTimer);
+      node.removeEventListener("scrollend", syncIndexFromScroll);
+      node.removeEventListener("scroll", onScroll);
+    };
+  }, [galeria?.proyecto.id, imagenesGaleria.length]);
+
+  useEffect(() => {
+    if (!galeria || imagenesGaleria.length <= 1) return;
+    const node = carouselRef.current;
+    if (!node) return;
+    requestAnimationFrame(() => {
+      node.scrollTo({ left: galeria.index * node.clientWidth, behavior: "auto" });
+    });
+  }, [galeria?.proyecto.id, imagenesGaleria.length]);
 
   return (
     <section id="proyectos" ref={rootRef} aria-labelledby="proyectos-titulo" className="relative z-[1] scroll-mt-28 pt-32 md:pt-40">
@@ -213,22 +287,73 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
       >
         {galeria && imagenesGaleria.length > 0 ? (
           <div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-carbon">
-              <Image
-                src={imagenesGaleria[galeria.index] ?? imagenesGaleria[0]}
-                alt={`Imagen ${galeria.index + 1} de ${imagenesGaleria.length} de ${galeria.proyecto.titulo}`}
-                fill
-                sizes="90vw"
-                className="object-contain"
-              />
-            </div>
             {imagenesGaleria.length > 1 ? (
-              <div className="mt-4 flex items-center justify-between gap-3">
+              <>
+                <p id={galeriaHintId} className="sr-only">
+                  Desliza horizontalmente o usa los botones de navegación para cambiar de imagen.
+                </p>
+                <div className="relative">
+                  <button
+                    type="button"
+                    className={`absolute left-2 top-1/2 z-20 -translate-y-1/2 ${navBtnClass}`}
+                    disabled={galeria.index === 0}
+                    onClick={irAnterior}
+                    aria-label="Imagen anterior"
+                  >
+                    <ChevronLeft aria-hidden="true" className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    className={`absolute right-2 top-1/2 z-20 -translate-y-1/2 ${navBtnClass}`}
+                    disabled={galeria.index === imagenesGaleria.length - 1}
+                    onClick={irSiguiente}
+                    aria-label="Imagen siguiente"
+                  >
+                    <ChevronRight aria-hidden="true" className="h-5 w-5" />
+                  </button>
+                  <div
+                    ref={carouselRef}
+                    className="flex aspect-[4/3] snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-2xl bg-carbon [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    style={{ WebkitOverflowScrolling: "touch" }}
+                    aria-describedby={galeriaHintId}
+                  >
+                    {imagenesGaleria.map((src, imageIndex) => (
+                      <div key={`${src}-${imageIndex}`} className="relative min-w-full shrink-0 snap-center">
+                        <div className="relative aspect-[4/3] w-full">
+                          <Image
+                            src={src}
+                            alt={`Imagen ${imageIndex + 1} de ${imagenesGaleria.length} de ${galeria.proyecto.titulo}`}
+                            fill
+                            sizes="90vw"
+                            className="object-contain"
+                            priority={imageIndex === galeria.index}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-carbon">
+                <Image
+                  src={imagenesGaleria[0]}
+                  alt={`Imagen de ${galeria.proyecto.titulo}`}
+                  fill
+                  sizes="90vw"
+                  className="object-contain"
+                />
+              </div>
+            )}
+            {imagenesGaleria.length > 1 ? (
+              <div
+                className="sticky bottom-0 z-20 -mx-5 mt-4 flex items-center justify-between gap-3 border-t border-white/10 bg-coal/95 px-5 py-3 backdrop-blur md:-mx-8 md:px-8"
+              >
                 <button
                   type="button"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/55 px-4 text-sm font-semibold disabled:opacity-40"
+                  className={navBtnClass}
                   disabled={galeria.index === 0}
-                  onClick={() => setGaleria({ ...galeria, index: galeria.index - 1 })}
+                  onClick={irAnterior}
                 >
                   <ChevronLeft aria-hidden="true" className="h-4 w-4" />
                   Anterior
@@ -238,9 +363,9 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
                 </p>
                 <button
                   type="button"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/55 px-4 text-sm font-semibold disabled:opacity-40"
+                  className={navBtnClass}
                   disabled={galeria.index === imagenesGaleria.length - 1}
-                  onClick={() => setGaleria({ ...galeria, index: galeria.index + 1 })}
+                  onClick={irSiguiente}
                 >
                   Siguiente
                   <ChevronRight aria-hidden="true" className="h-4 w-4" />

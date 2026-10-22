@@ -1,0 +1,11 @@
+
+> portafolio@0.1.0 start D:\Proyectos\portafolio
+> next start
+
+   ▲ Next.js 15.5.28
+   - Local:        http://localhost:3000
+   - Network:      http://172.31.80.1:3000
+
+ ✓ Starting...
+ ✓ Ready in 1860ms
+ ELIFECYCLE  Command failed with exit code 1.
