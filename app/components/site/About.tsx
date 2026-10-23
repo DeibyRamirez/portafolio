@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import LineHeading from "../motion/LineHeading";
+import Reveal from "../motion/Reveal";
 import { gsap, prefersReducedMotion, useGSAP } from "../motion/gsap";
 import { MANIFIESTO } from "./content";
 import Kicker from "./Kicker";
@@ -49,7 +50,7 @@ function Manifiesto() {
 
 export default function About() {
   return (
-    <section id="perfil" aria-labelledby="perfil-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-24 md:px-8 md:py-32">
+    <section id="perfil" aria-labelledby="perfil-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto grid max-w-[90rem] items-end gap-10 md:grid-cols-12 md:gap-12">
         <div className="md:col-span-5">
           <figure className="relative aspect-[4/5] overflow-hidden border border-white/15 bg-coal">
@@ -73,12 +74,14 @@ export default function About() {
           <LineHeading
             id="perfil-titulo"
             lines={["Ingeniería", "con criterio."]}
-            className="mt-4 text-[clamp(2.4rem,6vw,5.4rem)]"
+            className="mt-5 text-[clamp(2.4rem,6vw,5.4rem)]"
           />
           <Manifiesto />
-          <p className="mt-8 max-w-[46ch] text-base leading-relaxed text-silver md:text-lg">
-            Me muevo entre el desarrollo móvil, la web, los videojuegos y la automatización. Cuido que la interfaz se entienda, que la lógica aguante y que el dato esté donde corresponde.
-          </p>
+          <Reveal className="mt-8 max-w-[46ch]">
+            <p className="text-base leading-[1.65] text-silver md:text-lg">
+              Me muevo entre el desarrollo móvil, la web, los videojuegos y la automatización. Cuido que la interfaz se entienda, que la lógica aguante y que el dato esté donde corresponde.
+            </p>
+          </Reveal>
         </div>
       </div>
     </section>

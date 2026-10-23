@@ -10,6 +10,11 @@ if (typeof window !== "undefined") {
 
 export { gsap, ScrollTrigger, useGSAP };
 
+/** Shared exits. Scrubbed scroll stays linear. */
+export const EASE_OUT = "power3.out";
+export const EASE_IN = "power2.in";
+export const EASE_SPRING = "back.out(1.45)";
+
 export function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }

@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import LineHeading from "../motion/LineHeading";
+import { MicroRule } from "../motion/Micro";
 import { MagneticButton, MagneticLink } from "../motion/Magnetic";
+import Reveal from "../motion/Reveal";
 import { PERSONA } from "./content";
 import Dialog from "./Dialog";
 import Kicker from "./Kicker";
@@ -11,18 +13,21 @@ export default function Contact() {
   const [cvAbierto, setCvAbierto] = useState(false);
 
   return (
-    <section id="contacto" aria-labelledby="contacto-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-24 md:px-8 md:py-32">
+    <section id="contacto" aria-labelledby="contacto-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto max-w-[90rem]">
         <Kicker index="07" label="Contacto" />
-        <LineHeading id="contacto-titulo" lines={["Hablemos."]} className="mt-4 text-[clamp(2.4rem,6vw,5.4rem)]" />
-        <p className="mt-6 max-w-[36ch] text-lg text-silver md:text-xl">
-          Si hay un producto que construir, un flujo que ordenar o un equipo que necesita ingeniería, conversemos.
-        </p>
+        <LineHeading id="contacto-titulo" lines={["Hablemos."]} className="mt-5 text-[clamp(2.4rem,6vw,5.4rem)]" />
+        <Reveal className="mt-6 max-w-[36ch]">
+          <p className="text-base leading-[1.65] text-silver md:text-lg">
+            Si hay un producto que construir, un flujo que ordenar o un equipo que necesita ingeniería, conversemos.
+          </p>
+        </Reveal>
         <a
           href={`mailto:${PERSONA.email}`}
-          className="mt-8 block max-w-full break-all text-[clamp(1.15rem,3vw,2.4rem)] font-semibold leading-tight tracking-[-0.03em]"
+          className="relative mt-8 inline-block max-w-full break-all pb-1 text-[clamp(1.15rem,3vw,2.4rem)] font-semibold leading-tight tracking-[-0.03em]"
         >
           {PERSONA.email}
+          <MicroRule />
         </a>
         <div className="mt-8 flex flex-wrap gap-3">
           <MagneticLink href={`mailto:${PERSONA.email}`}>Escribir</MagneticLink>
@@ -43,7 +48,7 @@ export default function Contact() {
         <a
           href={PERSONA.cv}
           download
-          className="mt-4 inline-flex min-h-11 items-center bg-light px-5 py-3 text-sm font-semibold text-carbon"
+          className="on-light mt-4 inline-flex min-h-11 items-center bg-light px-5 py-3 text-sm font-semibold text-carbon"
         >
           Descargar PDF
         </a>

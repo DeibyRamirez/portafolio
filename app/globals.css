@@ -41,6 +41,16 @@ h2,
 h3,
 .font-display {
   font-family: var(--font-syne), "Syne", ui-sans-serif, system-ui, sans-serif;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a,
+button {
+  touch-action: manipulation;
 }
 
 button,
@@ -64,6 +74,13 @@ textarea {
   outline-offset: 3px;
 }
 
+/* Light controls need a dark edge plus a light outer ring. */
+.on-light:focus-visible {
+  outline: 2px solid #f4f4f1;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px #070708;
+}
+
 .grain {
   position: fixed;
   inset: 0;
@@ -71,7 +88,7 @@ textarea {
   pointer-events: none;
   background-image: url("/grain.png");
   background-repeat: repeat;
-  opacity: 0.14;
+  opacity: 0.09;
 }
 
 .wordmark {
@@ -108,6 +125,14 @@ dialog.sheet::backdrop {
   background: rgba(7, 7, 8, 0.86);
 }
 
+.role-mask {
+  display: inline-block;
+  height: 1.3em;
+  overflow: hidden;
+  line-height: 1.3;
+  vertical-align: bottom;
+}
+
 .role-line.is-next .role-char {
   transform: translateY(110%);
   opacity: 0;
@@ -125,6 +150,37 @@ dialog.sheet::backdrop {
   to {
     transform: translateY(7px);
     opacity: 1;
+  }
+}
+
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  a.magnet:active,
+  button.magnet:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #menu-movil a {
+    animation: menu-rise 0.42s var(--ease-out) both;
+  }
+
+  #menu-movil li:nth-child(1) a { animation-delay: 0.02s; }
+  #menu-movil li:nth-child(2) a { animation-delay: 0.06s; }
+  #menu-movil li:nth-child(3) a { animation-delay: 0.1s; }
+  #menu-movil li:nth-child(4) a { animation-delay: 0.14s; }
+  #menu-movil li:nth-child(5) a { animation-delay: 0.18s; }
+  #menu-movil li:nth-child(6) a { animation-delay: 0.22s; }
+}
+
+@keyframes menu-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 

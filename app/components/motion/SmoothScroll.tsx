@@ -33,7 +33,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
         if (!(destination instanceof HTMLElement)) return;
         event.preventDefault();
         if (current) {
-          current.scrollTo(destination, { offset: -88, duration: 1.6 });
+          current.scrollTo(destination, { offset: -88, duration: 1.05 });
         } else {
           destination.scrollIntoView({ block: "start" });
         }

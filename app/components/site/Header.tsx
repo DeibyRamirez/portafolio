@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 import { NAV, PERSONA } from "./content";
 import { getLenis } from "../motion/SmoothScroll";
-import { Nudge } from "../motion/Micro";
+import { MicroRule, Nudge } from "../motion/Micro";
 
 export default function Header() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -135,7 +135,7 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="border-b border-white/10 bg-carbon/95">
+      <div className="border-b border-white/10 bg-carbon">
         <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between gap-4 px-5 py-3.5 md:px-8">
           <a href="#inicio" className="min-w-0 text-light">
             <span className="block text-sm font-semibold tracking-[-0.03em] md:text-base">{PERSONA.nombre}</span>
@@ -149,10 +149,11 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   aria-current={current ? "true" : undefined}
-                  className={`inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] ${current ? "text-light" : "text-silver"}`}
+                  className={`relative inline-flex items-center gap-2 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${current ? "text-light" : "text-silver hover:text-light"}`}
                 >
                   {item.label}
                   <Nudge />
+                  <MicroRule active={current} />
                 </a>
               );
             })}

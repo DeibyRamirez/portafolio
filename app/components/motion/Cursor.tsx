@@ -12,8 +12,8 @@ export default function Cursor() {
 
     document.documentElement.classList.add("has-cursor");
     gsap.set(node, { xPercent: -50, yPercent: -50, x: -40, y: -40, opacity: 0 });
-    const xTo = gsap.quickTo(node, "x", { duration: 0.35, ease: "power3.out" });
-    const yTo = gsap.quickTo(node, "y", { duration: 0.35, ease: "power3.out" });
+    const xTo = gsap.quickTo(node, "x", { duration: 0.28, ease: "power3.out" });
+    const yTo = gsap.quickTo(node, "y", { duration: 0.28, ease: "power3.out" });
 
     const modalAbierto = () => document.documentElement.classList.contains("modal-open");
 
@@ -28,7 +28,7 @@ export default function Cursor() {
       const target = event.target;
       if (!(target instanceof Element)) return;
       const hot = Boolean(target.closest("a, button"));
-      gsap.to(node, { scale: hot ? 1.8 : 1, duration: 0.3, ease: "power3.out" });
+      gsap.to(node, { scale: hot ? 1.65 : 1, duration: 0.28, ease: "power3.out", overwrite: "auto" });
     };
     const onOut = (event: PointerEvent) => {
       if (!event.relatedTarget) gsap.to(node, { opacity: 0, duration: 0.2 });
@@ -50,7 +50,7 @@ export default function Cursor() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="site-cursor pointer-events-none fixed left-0 top-0 z-[70] h-3 w-3 rounded-full bg-light opacity-0 mix-blend-difference"
+      className="site-cursor pointer-events-none fixed left-0 top-0 z-[70] h-3.5 w-3.5 rounded-full bg-light opacity-0 mix-blend-difference"
     />
   );
 }

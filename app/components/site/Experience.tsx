@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import LineHeading from "../motion/LineHeading";
+import Reveal from "../motion/Reveal";
 import { gsap, prefersReducedMotion, useGSAP } from "../motion/gsap";
 import { PERSONA, TRAYECTORIA } from "./content";
 import Kicker from "./Kicker";
@@ -39,15 +40,17 @@ export default function Experience() {
       id="trayectoria"
       ref={rootRef}
       aria-labelledby="trayectoria-titulo"
-      className="scroll-mt-28 border-t border-white/10 px-5 py-24 md:px-8 md:py-32"
+      className="scroll-mt-28 border-t border-white/10 px-5 py-20 md:px-8 md:py-28 lg:py-32"
     >
       <div className="mx-auto grid max-w-[90rem] gap-12 md:grid-cols-12">
         <div className="md:col-span-5">
           <Kicker index="05" label="Recorrido" />
-          <LineHeading id="trayectoria-titulo" lines={["Trayectoria."]} className="mt-4 text-[clamp(2.4rem,6vw,5.4rem)]" />
-          <p className="mt-6 max-w-[30ch] text-lg text-silver">
-            Cada frente corresponde a trabajo publicado o a formación que ya está en el archivo.
-          </p>
+          <LineHeading id="trayectoria-titulo" lines={["Trayectoria."]} className="mt-5 text-[clamp(2.4rem,6vw,5.4rem)]" />
+          <Reveal className="mt-6 max-w-[30ch]">
+            <p className="text-base leading-[1.65] text-silver md:text-lg">
+              Cada frente corresponde a trabajo publicado o a formación que ya está en el archivo.
+            </p>
+          </Reveal>
         </div>
         <div className="md:col-span-7">
           <ol className="relative border-l border-white/15">
