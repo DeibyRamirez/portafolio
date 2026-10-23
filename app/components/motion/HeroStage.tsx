@@ -47,6 +47,7 @@ export default function HeroStage() {
             alt=""
             fill
             priority
+            fetchPriority="high"
             unoptimized
             sizes="(max-width: 768px) 296px, 40vw"
             className={`object-contain transition-opacity duration-700 ${live ? "opacity-25" : "opacity-100"}`}

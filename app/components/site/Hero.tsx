@@ -101,7 +101,7 @@ export default function Hero({ proyectos }: { proyectos: DesarrolloInterface[] }
           <p
             ref={roleRef}
             aria-hidden="true"
-            className="hero-role relative mt-5 min-h-[1.25em] overflow-hidden text-[clamp(1.15rem,4.2vw,2.15rem)] font-semibold leading-none tracking-[-0.03em] text-light"
+            className="hero-role relative mt-5 min-h-[1.25em] overflow-hidden whitespace-nowrap text-[clamp(1.15rem,4.2vw,2.15rem)] font-semibold leading-none tracking-[-0.03em] text-light"
           >
             {FRASES.map((frase, index) => (
               <RoleLine key={frase} text={frase} hidden={index !== 0} />

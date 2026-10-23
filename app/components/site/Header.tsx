@@ -6,10 +6,8 @@ import { Menu, X } from "lucide-react";
 import { NAV, PERSONA } from "./content";
 import { getLenis } from "../motion/SmoothScroll";
 import { Nudge } from "../motion/Micro";
-import { gsap, prefersReducedMotion, ScrollTrigger, useGSAP } from "../motion/gsap";
 
 export default function Header() {
-  const barRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const firstRender = useRef(true);
@@ -36,45 +34,6 @@ export default function Header() {
     nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, []);
-
-  useGSAP(() => {
-    const bar = barRef.current;
-    if (!bar || prefersReducedMotion()) return;
-
-    let ready = false;
-    gsap.fromTo(
-      bar,
-      { yPercent: -120 },
-      {
-        yPercent: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.15,
-        onComplete: () => {
-          ready = true;
-        },
-      },
-    );
-
-    const quick = gsap.quickTo(bar, "yPercent", { duration: 0.45, ease: "power3.out" });
-    let last = 0;
-    const trigger = ScrollTrigger.create({
-      start: 0,
-      end: "max",
-      onUpdate: (self) => {
-        if (!ready || document.body.dataset.navOpen === "true") {
-          if (document.body.dataset.navOpen === "true") quick(0);
-          return;
-        }
-        const y = self.scroll();
-        if (y > last + 8 && y > 72) quick(-120);
-        else if (y < last - 8) quick(0);
-        last = y;
-      },
-    });
-
-    return () => trigger.kill();
-  }, { scope: barRef });
 
   useEffect(() => {
     const locked = [document.querySelector("header"), document.querySelector("main"), document.querySelector("footer")];
@@ -176,7 +135,7 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div ref={barRef} className="border-b border-white/10 bg-carbon/95">
+      <div className="border-b border-white/10 bg-carbon/95">
         <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between gap-4 px-5 py-3.5 md:px-8">
           <a href="#inicio" className="min-w-0 text-light">
             <span className="block text-sm font-semibold tracking-[-0.03em] md:text-base">{PERSONA.nombre}</span>
