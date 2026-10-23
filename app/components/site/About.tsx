@@ -5,6 +5,7 @@ import Image from "next/image";
 import LineHeading from "../motion/LineHeading";
 import { gsap, prefersReducedMotion, useGSAP } from "../motion/gsap";
 import { MANIFIESTO } from "./content";
+import Kicker from "./Kicker";
 
 function Manifiesto() {
   const ref = useRef<HTMLParagraphElement>(null);
@@ -18,13 +19,13 @@ function Manifiesto() {
       }
       gsap.to(".word-lit", {
         opacity: 1,
-        stagger: 0.06,
+        stagger: 0.05,
         ease: "none",
         scrollTrigger: {
           trigger: ref.current,
-          start: "top 78%",
-          end: "bottom 45%",
-          scrub: 0.6,
+          start: "top 80%",
+          end: "bottom 48%",
+          scrub: 0.5,
         },
       });
     },
@@ -32,7 +33,7 @@ function Manifiesto() {
   );
 
   return (
-    <p ref={ref} className="mt-8 text-[clamp(1.7rem,4.2vw,3.2rem)] font-semibold leading-[1.18] tracking-[-0.025em]">
+    <p ref={ref} className="mt-6 text-[clamp(1.55rem,3.6vw,2.8rem)] font-semibold leading-[1.2] tracking-[-0.03em]">
       <span className="sr-only">{MANIFIESTO}</span>
       <span aria-hidden="true">
         {words.map((word, index) => (
@@ -48,30 +49,34 @@ function Manifiesto() {
 
 export default function About() {
   return (
-    <section id="perfil" aria-labelledby="perfil-titulo" className="relative z-[1] scroll-mt-28 px-6 py-32 md:px-8 md:py-40">
-      <div className="mx-auto grid max-w-7xl items-end gap-12 md:grid-cols-12">
-        <div className="order-2 md:order-1 md:col-span-5">
-          <figure className="group relative aspect-[4/5] overflow-hidden rounded-3xl bg-coal">
+    <section id="perfil" aria-labelledby="perfil-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-24 md:px-8 md:py-32">
+      <div className="mx-auto grid max-w-[90rem] items-end gap-10 md:grid-cols-12 md:gap-12">
+        <div className="md:col-span-5">
+          <figure className="relative aspect-[4/5] overflow-hidden border border-white/15 bg-coal">
             <Image
               src="/YO.jpg"
               alt="Retrato de Deiby Ramirez, ingeniero de software."
               fill
-              sizes="(max-width: 768px) 100vw, 40vw"
-              className="object-cover grayscale transition-transform duration-[2400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none"
+              sizes="(max-width: 768px) 100vw, 36vw"
+              loading="lazy"
+              fetchPriority="low"
+              className="object-cover grayscale"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-carbon via-carbon/10 to-transparent" />
-            <figcaption className="absolute bottom-5 left-5 text-sm font-semibold tracking-[-0.02em]">Deiby Ramirez</figcaption>
+            <figcaption className="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-3 bg-carbon px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-light">
+              <span>Fig. 01 · Retrato</span>
+              <span>Deiby Ramirez</span>
+            </figcaption>
           </figure>
         </div>
-        <div className="order-1 md:order-2 md:col-span-7">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-silver">Perfil</p>
+        <div className="md:col-span-7">
+          <Kicker index="02" label="Perfil" />
           <LineHeading
             id="perfil-titulo"
             lines={["Ingeniería", "con criterio."]}
-            className="mt-4 text-[clamp(2.6rem,7.2vw,6.4rem)]"
+            className="mt-4 text-[clamp(2.4rem,6vw,5.4rem)]"
           />
           <Manifiesto />
-          <p className="reveal mt-8 max-w-[38ch] text-base leading-relaxed text-silver md:text-lg">
+          <p className="mt-8 max-w-[46ch] text-base leading-relaxed text-silver md:text-lg">
             Me muevo entre el desarrollo móvil, la web, los videojuegos y la automatización. Cuido que la interfaz se entienda, que la lógica aguante y que el dato esté donde corresponde.
           </p>
         </div>

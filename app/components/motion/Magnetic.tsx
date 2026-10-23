@@ -1,12 +1,13 @@
 "use client";
 
 import { useRef, type PointerEvent, type ReactNode } from "react";
+import { Nudge } from "./Micro";
 import { finePointer, gsap, prefersReducedMotion } from "./gsap";
 
 const primary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-light px-6 py-3 text-sm font-semibold text-carbon transition-colors duration-150 hover:bg-white/85";
+  "inline-flex min-h-11 items-center justify-center gap-3 bg-light px-5 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-carbon transition-opacity duration-200 hover:opacity-80";
 const secondary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/55 px-6 py-3 text-sm font-semibold text-light transition-colors duration-150 hover:bg-light hover:text-carbon";
+  "inline-flex min-h-11 items-center justify-center gap-3 border border-white/55 px-5 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-light transition-opacity duration-200 hover:opacity-70";
 
 function canMagnet() {
   return finePointer() && !prefersReducedMotion();
@@ -19,9 +20,9 @@ function useMagnet<T extends HTMLElement>() {
     const node = ref.current;
     if (!node || !canMagnet()) return;
     const rect = node.getBoundingClientRect();
-    const x = (event.clientX - (rect.left + rect.width / 2)) * 0.35;
-    const y = (event.clientY - (rect.top + rect.height / 2)) * 0.35;
-    gsap.to(node, { x, y, duration: 0.4, ease: "power3.out" });
+    const x = (event.clientX - (rect.left + rect.width / 2)) * 0.28;
+    const y = (event.clientY - (rect.top + rect.height / 2)) * 0.28;
+    gsap.to(node, { x, y, duration: 0.35, ease: "power3.out" });
   };
 
   const onPointerLeave = () => {
@@ -31,7 +32,7 @@ function useMagnet<T extends HTMLElement>() {
       gsap.set(node, { x: 0, y: 0 });
       return;
     }
-    gsap.to(node, { x: 0, y: 0, duration: 0.9, ease: "elastic.out(1, 0.35)" });
+    gsap.to(node, { x: 0, y: 0, duration: 0.55, ease: "power3.out" });
   };
 
   return { ref, onPointerMove, onPointerLeave };
@@ -64,6 +65,7 @@ export function MagneticLink({
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       {children}
+      <Nudge />
       {external ? <span className="sr-only"> (se abre en una pestaña nueva)</span> : null}
     </a>
   );
@@ -91,6 +93,7 @@ export function MagneticButton({
       className={`${variant === "primary" ? primary : secondary} ${className}`}
     >
       {children}
+      <Nudge />
     </button>
   );
 }

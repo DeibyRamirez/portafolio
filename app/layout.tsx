@@ -2,9 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Outfit, Syne } from "next/font/google";
 import Cursor from "./components/motion/Cursor";
 import Grain from "./components/motion/Grain";
-import Intro from "./components/motion/Intro";
 import SmoothScroll from "./components/motion/SmoothScroll";
-import Starfield from "./components/motion/Starfield";
 import Footer from "./components/site/Footer";
 import Header from "./components/site/Header";
 import { PERSONA } from "./components/site/content";
@@ -15,6 +13,8 @@ const syne = Syne({
   weight: ["600", "700"],
   variable: "--font-syne",
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 const outfit = Outfit({
@@ -22,33 +22,55 @@ const outfit = Outfit({
   weight: ["500", "600"],
   variable: "--font-outfit",
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 const description =
   "Portafolio de Deiby Ramirez, The Cheiviz. Ingeniero de software. Proyectos de desarrollo móvil, web, videojuegos y automatización.";
 
+const title = "Deiby Ramirez · Ingeniero de software";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://portafolio.cheiviz.com"),
   title: {
-    default: "Deiby Ramirez · Ingeniero de software",
+    default: title,
     template: "%s · Deiby Ramirez",
   },
   description,
   authors: [{ name: PERSONA.nombreCompleto, url: PERSONA.github }],
+  creator: PERSONA.nombreCompleto,
+  keywords: [
+    "Deiby Ramirez",
+    "The Cheiviz",
+    "ingeniero de software",
+    "portafolio",
+    "desarrollo web",
+    "desarrollo móvil",
+  ],
   alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Deiby Ramirez · Ingeniero de software",
+    title,
     description,
+    url: "https://portafolio.cheiviz.com",
+    siteName: "Deiby Ramirez",
     locale: "es_CO",
     type: "website",
     images: [{ url: "/YO.jpg", alt: "Retrato de Deiby Ramirez" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/YO.jpg"],
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0a0a0a",
+  themeColor: "#070708",
 };
 
 const jsonLd = {
@@ -66,20 +88,21 @@ const jsonLd = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${syne.variable} ${outfit.variable}`}>
+      <head>
+        <link rel="preload" href="/hero-poster.svg" as="image" fetchPriority="high" />
+      </head>
       <body className="antialiased">
         <SmoothScroll>
-          <Starfield />
           <Grain />
-          <Intro />
           <Cursor />
           <a
             href="#contenido"
-            className="absolute left-4 top-0 z-[90] -translate-y-full rounded-full bg-light px-4 py-2 text-sm font-semibold text-carbon focus:top-4 focus:translate-y-0"
+            className="absolute left-4 top-0 z-[90] -translate-y-full bg-light px-4 py-2 text-sm font-semibold text-carbon focus:top-4 focus:translate-y-0"
           >
             Saltar al contenido
           </a>
           <Header />
-          <main id="contenido" className="relative z-[1]">
+          <main id="contenido" className="relative z-[2]">
             {children}
           </main>
           <Footer />
