@@ -24,7 +24,9 @@ export const MANIFIESTO =
 export const NAV = [
   { href: "#proyectos", label: "Proyectos" },
   { href: "#perfil", label: "Perfil" },
+  { href: "#stack", label: "Oficio" },
   { href: "#trayectoria", label: "Trayectoria" },
+  { href: "#certificados", label: "Certificados" },
   { href: "#contacto", label: "Contacto" },
 ];
 

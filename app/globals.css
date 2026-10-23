@@ -1,42 +1,38 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-carbon: #0a0a0a;
-  --color-coal: #212121;
-  --color-graphite: #424242;
-  --color-silver: #aaaaaa;
-  --color-light: #ffffff;
-  --color-dim: #2b2b2b;
-  --color-brass: #d6b36a;
+  --color-carbon: #070708;
+  --color-coal: #101012;
+  --color-graphite: #2c2c30;
+  --color-silver: #c6c6c0;
+  --color-light: #f4f4f1;
+  --color-dim: #3a3a3e;
   --font-display: var(--font-syne), "Syne", ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-outfit), "Outfit", ui-sans-serif, system-ui, sans-serif;
-  --radius-card: 1rem;
-  --radius-card-lg: 1.5rem;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
 }
 
 :root {
-  --section-py: 8rem;
-  --section-py-lg: 10rem;
   --z-nav: 50;
-  --z-grain: 60;
+  --z-grain: 1;
   --z-cursor: 70;
-  --z-intro: 80;
-  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: dark;
 }
 
 html {
-  scroll-padding-top: 5.5rem;
-  background: #0a0a0a;
+  scroll-padding-top: 5.25rem;
+  background: #070708;
 }
 
 body {
   min-height: 100dvh;
-  background: #0a0a0a;
-  color: #ffffff;
+  overflow-x: clip;
+  background: #070708;
+  color: #f4f4f1;
   font-family: var(--font-outfit), "Outfit", ui-sans-serif, system-ui, sans-serif;
   font-weight: 500;
-  line-height: 1.625;
+  line-height: 1.6;
   text-rendering: optimizeLegibility;
 }
 
@@ -55,8 +51,8 @@ textarea {
 }
 
 ::selection {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: #f4f4f1;
+  color: #070708;
 }
 
 :focus {
@@ -64,57 +60,28 @@ textarea {
 }
 
 :focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid #f4f4f1;
   outline-offset: 3px;
 }
 
 .grain {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 1;
   pointer-events: none;
   background-image: url("/grain.png");
   background-repeat: repeat;
-  opacity: 0.16;
-  mix-blend-mode: overlay;
-}
-
-.intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  animation: intro-fade 1.15s var(--ease-out) forwards;
-}
-
-.intro-mark {
-  width: 3.25rem;
-  height: 3.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 999px;
-  animation: intro-mark 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.intro-beam {
-  position: absolute;
-  top: 42%;
-  left: 0;
-  height: 1px;
-  width: 28%;
-  background: #ffffff;
-  animation: intro-beam 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.05s both;
+  opacity: 0.14;
 }
 
 .wordmark {
   font-family: var(--font-syne), "Syne", ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
-  font-size: clamp(4rem, 16vw, 15rem);
-  line-height: 0.84;
-  letter-spacing: -0.025em;
+  font-size: clamp(4.2rem, 18vw, 16rem);
+  line-height: 0.8;
+  letter-spacing: -0.045em;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.14);
+  -webkit-text-stroke: 1px rgba(244, 244, 241, 0.22);
   white-space: nowrap;
 }
 
@@ -125,10 +92,10 @@ dialog.sheet {
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: 1rem;
+  padding: 0.75rem;
   border: 0;
   background: transparent;
-  color: #ffffff;
+  color: #f4f4f1;
 }
 
 dialog.sheet[open] {
@@ -138,7 +105,7 @@ dialog.sheet[open] {
 }
 
 dialog.sheet::backdrop {
-  background: rgba(10, 10, 10, 0.82);
+  background: rgba(7, 7, 8, 0.86);
 }
 
 .role-line.is-next .role-char {
@@ -146,44 +113,28 @@ dialog.sheet::backdrop {
   opacity: 0;
 }
 
-@keyframes intro-mark {
-  from {
-    transform: scale(0.6) rotate(-20deg);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
+.scroll-nudge {
+  animation: scroll-nudge 1.15s var(--ease-out) infinite alternate;
 }
 
-@keyframes intro-beam {
+@keyframes scroll-nudge {
   from {
-    transform: translateX(-120%);
+    transform: translateY(0);
+    opacity: 0.35;
   }
   to {
-    transform: translateX(220%);
-  }
-}
-
-@keyframes intro-fade {
-  0%,
-  55% {
+    transform: translateY(7px);
     opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro-overlay {
-    display: none;
-  }
-
   html {
     scroll-behavior: auto;
+  }
+
+  .scroll-nudge {
+    animation: none;
   }
 
   *,
