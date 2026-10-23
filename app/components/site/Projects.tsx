@@ -5,11 +5,20 @@ import Image from "next/image";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { DesarrolloInterface } from "@/app/models/Desarrollos";
 import LineHeading from "../motion/LineHeading";
-import { MicroRule } from "../motion/Micro";
+import { HoverX, Lift, MicroRule } from "../motion/Micro";
 import { ScrollTrigger } from "../motion/gsap";
 import { etiquetaTipo, herramientasDe, imagenPublica, indice, ordenarProyectos } from "./content";
 import Dialog from "./Dialog";
 import Kicker from "./Kicker";
+
+let imageRefresh: ReturnType<typeof setTimeout> | undefined;
+
+function scheduleRefresh() {
+  if (imageRefresh) clearTimeout(imageRefresh);
+  imageRefresh = setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 160);
+}
 
 export default function Projects({ proyectos }: { proyectos: DesarrolloInterface[] }) {
   const rootRef = useRef<HTMLElement>(null);
@@ -90,13 +99,15 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
   }, [galeriaId, imagenesGaleria.length]);
 
   return (
-    <section id="proyectos" ref={rootRef} aria-labelledby="proyectos-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-24 md:px-8 md:py-32">
+    <section id="proyectos" ref={rootRef} aria-labelledby="proyectos-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto w-full max-w-[90rem]">
         <Kicker index="03" label="Trabajo" />
-        <LineHeading id="proyectos-titulo" lines={["Proyectos."]} className="mt-4 text-[clamp(2.4rem,6vw,5.4rem)]" />
+        <LineHeading id="proyectos-titulo" lines={["Proyectos."]} className="mt-5 text-[clamp(2.4rem,6vw,5.4rem)]" />
 
         {ordenados.length === 0 ? (
-          <p className="mt-12 text-lg text-silver">Aún no hay proyectos publicados.</p>
+          <p className="mt-12 border border-white/15 px-5 py-8 text-base leading-[1.65] text-silver md:px-8 md:text-lg">
+            Aún no hay proyectos publicados.
+          </p>
         ) : (
           <div className="mt-12">
             {ordenados.map((proyecto, index) => {
@@ -130,11 +141,14 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
                         href={proyecto.repositorio}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-light"
+                        className="relative mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-light"
                       >
                         Ver código
-                        <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                        <HoverX>
+                          <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                        </HoverX>
                         <span className="sr-only"> de {proyecto.titulo} (se abre en una pestaña nueva)</span>
+                        <MicroRule />
                       </a>
                     ) : null}
                   </div>
@@ -142,16 +156,18 @@ export default function Projects({ proyectos }: { proyectos: DesarrolloInterface
                     {portada ? (
                       <button type="button" className="block w-full text-left" onClick={() => setGaleria({ proyecto, index: 0 })}>
                         <span className="relative block aspect-[16/10] overflow-hidden border border-white/15 bg-coal">
-                          <Image
-                            src={portada}
-                            alt={`Captura del proyecto ${proyecto.titulo}`}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            loading="lazy"
-                            fetchPriority="low"
-                            className="object-cover"
-                            onLoad={() => ScrollTrigger.refresh()}
-                          />
+                          <Lift>
+                            <Image
+                              src={portada}
+                              alt={`Captura del proyecto ${proyecto.titulo}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                              loading="lazy"
+                              fetchPriority="low"
+                              className="object-cover"
+                              onLoad={scheduleRefresh}
+                            />
+                          </Lift>
                         </span>
                         <span className="mt-3 inline-flex font-mono text-[10px] uppercase tracking-[0.16em] text-silver">Ampliar</span>
                       </button>

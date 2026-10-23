@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { DesarrolloInterface } from "@/app/models/Desarrollos";
 import LineHeading from "../motion/LineHeading";
 import { MicroRule } from "../motion/Micro";
+import Reveal from "../motion/Reveal";
 import { AREAS, unicos } from "./content";
 import Kicker from "./Kicker";
 
@@ -26,7 +27,7 @@ function Grupo({ titulo, items }: { titulo: string; items: string[] }) {
       {items.length > 8 ? (
         <button
           type="button"
-          className="mt-4 min-h-11 text-sm font-semibold underline-offset-4 hover:underline"
+          className="mt-4 min-h-11 text-sm font-semibold text-light underline-offset-4 hover:underline"
           aria-expanded={abierto}
           onClick={() => setAbierto((value) => !value)}
         >
@@ -49,11 +50,13 @@ export default function Skills({ proyectos }: { proyectos: DesarrolloInterface[]
   const hayHerramientas = grupos.some((grupo) => grupo.items.length > 0);
 
   return (
-    <section id="stack" aria-labelledby="stack-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-24 md:px-8 md:py-32">
+    <section id="stack" aria-labelledby="stack-titulo" className="scroll-mt-28 border-t border-white/10 px-5 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto max-w-[90rem]">
         <Kicker index="04" label="Oficio" />
-        <LineHeading id="stack-titulo" lines={["Stack."]} className="mt-4 text-[clamp(2.4rem,6vw,5.4rem)]" />
-        <p className="mt-6 max-w-[36ch] text-lg text-silver">Cinco frentes. Las herramientas salen de los proyectos publicados.</p>
+        <LineHeading id="stack-titulo" lines={["Stack."]} className="mt-5 text-[clamp(2.4rem,6vw,5.4rem)]" />
+        <Reveal className="mt-6 max-w-[36ch]">
+          <p className="text-base leading-[1.65] text-silver md:text-lg">Cinco frentes. Las herramientas salen de los proyectos publicados.</p>
+        </Reveal>
 
         <div className="mt-14 border-t border-white/15">
           {AREAS.map((area, index) => (

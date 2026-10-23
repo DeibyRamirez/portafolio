@@ -56,7 +56,7 @@ export default function Dialog({
         <div
           ref={panelRef}
           tabIndex={-1}
-          className="max-h-[90vh] w-full max-w-5xl overflow-auto border border-white/20 bg-coal p-5 outline-none md:p-8"
+          className="max-h-[90vh] w-full max-w-5xl overflow-auto overscroll-contain border border-white/20 bg-coal p-5 outline-none md:p-8"
           onClick={(event) => event.stopPropagation()}
         >
           <div className="mb-5 flex items-start justify-between gap-4">

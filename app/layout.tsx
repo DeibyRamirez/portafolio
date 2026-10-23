@@ -97,7 +97,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Cursor />
           <a
             href="#contenido"
-            className="absolute left-4 top-0 z-[90] -translate-y-full bg-light px-4 py-2 text-sm font-semibold text-carbon focus:top-4 focus:translate-y-0"
+            className="on-light absolute left-4 top-0 z-[90] -translate-y-full bg-light px-4 py-2 text-sm font-semibold text-carbon focus:top-4 focus:translate-y-0 focus-visible:top-4 focus-visible:translate-y-0"
           >
             Saltar al contenido
           </a>

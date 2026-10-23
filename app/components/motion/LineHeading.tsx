@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, prefersReducedMotion, useGSAP } from "./gsap";
+import { EASE_OUT, gsap, prefersReducedMotion, useGSAP } from "./gsap";
 
 export default function LineHeading({
   lines,
@@ -22,12 +22,13 @@ export default function LineHeading({
       const inners = ref.current?.querySelectorAll(".line-inner");
       if (!inners?.length) return;
       gsap.from(inners, {
-        yPercent: 115,
-        duration: 1.2,
-        ease: "power4.out",
+        yPercent: 110,
+        duration: 0.85,
+        ease: EASE_OUT,
+        stagger: 0.06,
         scrollTrigger: {
           trigger: ref.current,
-          start: "top 82%",
+          start: "top 86%",
           once: true,
         },
       });
@@ -38,7 +39,7 @@ export default function LineHeading({
   const Tag = as;
 
   return (
-    <Tag id={id} ref={ref} className={`font-semibold leading-[1.05] tracking-[-0.025em] ${className}`}>
+    <Tag id={id} ref={ref} className={`font-semibold leading-[1.12] tracking-[-0.035em] ${className}`}>
       {lines.map((line) => (
         <span key={line} className="block overflow-hidden">
           <span className="line-inner block">{line} </span>

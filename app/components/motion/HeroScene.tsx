@@ -30,7 +30,15 @@ export default function HeroScene({ onReady, onUnavailable }: Props) {
     let release: (() => void) | null = null;
 
     const boot = async () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        failRef.current?.();
+        return;
+      }
       const THREE = await import("three");
+      if (disposed) return;
+      const scheduler = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+      if (scheduler?.yield) await scheduler.yield();
+      else await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
       if (disposed) return;
 
       const mobile = window.matchMedia("(max-width: 767px)").matches;

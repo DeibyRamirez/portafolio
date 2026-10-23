@@ -1,3 +1,4 @@
+import { MicroRule } from "../motion/Micro";
 import { NAV, PERSONA } from "./content";
 
 export default function Footer() {
@@ -16,15 +17,17 @@ export default function Footer() {
           <ul className="flex flex-col gap-2 md:items-end">
             {NAV.map((item) => (
               <li key={item.href}>
-                <a href={item.href} className="inline-flex min-h-11 items-center text-sm font-semibold text-silver">
+                <a href={item.href} className="relative inline-flex min-h-11 items-center text-sm font-semibold text-silver hover:text-light">
                   {item.label}
+                  <MicroRule />
                 </a>
               </li>
             ))}
             <li>
-              <a href={PERSONA.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm font-semibold text-silver">
+              <a href={PERSONA.github} target="_blank" rel="noopener noreferrer" className="relative inline-flex min-h-11 items-center text-sm font-semibold text-silver hover:text-light">
                 GitHub
                 <span className="sr-only"> (se abre en una pestaña nueva)</span>
+                <MicroRule />
               </a>
             </li>
           </ul>
