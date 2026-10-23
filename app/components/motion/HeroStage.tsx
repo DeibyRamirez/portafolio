@@ -135,7 +135,7 @@ export default function HeroStage() {
         <p className="absolute left-3 top-3 z-[2] font-mono text-[10px] uppercase tracking-[0.16em] text-silver">{label}</p>
         <p className="absolute bottom-3 right-3 z-[2] font-mono text-[10px] uppercase tracking-[0.16em] text-silver">Núcleo 01</p>
         <div className="absolute inset-[12%]">
-          <Image
+          {/* <Image
             src="/hero-poster.svg"
             alt=""
             fill
@@ -144,7 +144,7 @@ export default function HeroStage() {
             unoptimized
             sizes="(max-width: 768px) 296px, 40vw"
             className={`object-contain transition-opacity duration-500 ${live ? "opacity-25" : "opacity-100"}`}
-          />
+          /> */}
           {mode === "webgl" ? (
             <HeroScene onReady={() => setLive(true)} onUnavailable={() => setMode("poster")} />
           ) : null}
